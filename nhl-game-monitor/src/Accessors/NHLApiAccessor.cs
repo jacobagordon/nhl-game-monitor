@@ -12,7 +12,6 @@ namespace nhl_game_monitor.src.Accessors
     public class NHLApiAccessor : INHLApiAccessor
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "https://api-web.nhle.com/v1";
 
         public NHLApiAccessor(HttpClient httpClient)
         {
