@@ -1,6 +1,8 @@
-namespace nhl_game_monitor;
+using nhl_game_monitor.src.Services;
 
-public class Worker(ILogger<Worker> logger) : BackgroundService
+namespace nhl_game_monitor.src.Worker;
+
+public class Worker(ILogger<Worker> logger, NHLGameService nhlGameService) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -10,7 +12,9 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
             {
                 logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             }
-            await Task.Delay(1000, stoppingToken);
+            await nhlGameService.PollNhlGames();
+
+            await Task.Delay(20000, stoppingToken);
         }
     }
 }
