@@ -12,7 +12,7 @@ public class Worker(ILogger<Worker> logger, NHLGameService nhlGameService) : Bac
             {
                 logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             }
-            await nhlGameService.PollNhlGames();
+            await nhlGameService.CheckForCompletedGamesAsync(stoppingToken);
 
             await Task.Delay(20000, stoppingToken);
         }

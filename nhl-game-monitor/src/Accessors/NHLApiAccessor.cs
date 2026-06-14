@@ -21,8 +21,7 @@ namespace nhl_game_monitor.src.Accessors
 
         public async Task<Schedule> GetScheduleDateAsync(string date, CancellationToken cancellationToken = default)
         {
-            var url = $"{_baseUrl}/schedule/{date}";
-            using var response = await _httpClient.GetAsync(url, cancellationToken);
+            using var response = await _httpClient.GetAsync($"schedule/{date}", cancellationToken);
             {
                 if (!response.IsSuccessStatusCode)
                 {

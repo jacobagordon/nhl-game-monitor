@@ -5,7 +5,11 @@ using System.Net.Http.Headers;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-builder.Services.AddHttpClient<NHLApiAccessor>();
+builder.Services.AddHttpClient<INHLApiAccessor, NHLApiAccessor>(client =>
+{
+    client.BaseAddress = new Uri("https://api-web.nhle.com/v1/");
+    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+});
 builder.Services.AddSingleton<NHLGameService>();
 builder.Services.AddHostedService<Worker>();
 
