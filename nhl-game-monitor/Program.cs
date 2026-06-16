@@ -4,7 +4,7 @@ using nhl_game_monitor.src.Accessors;
 using System.Net.Http.Headers;
 using nhl_game_monitor.src.State;
 
-var builder = Host.CreateApplicationBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient<INHLApiAccessor, NHLApiAccessor>(client =>
 {
@@ -15,8 +15,10 @@ builder.Services.AddHttpClient<INHLApiAccessor, NHLApiAccessor>(client =>
 builder.Services.AddSingleton<GameMonitorState>();
 builder.Services.AddSingleton<NHLGameService>();
 builder.Services.AddHostedService<Worker>();
+builder.Services.AddControllers();
 
 builder.Logging.AddConfiguration(builder.Configuration.GetSection("Logging"));
 
-var host = builder.Build();
-host.Run();
+var app = builder.Build();
+app.MapControllers();
+app.Run();

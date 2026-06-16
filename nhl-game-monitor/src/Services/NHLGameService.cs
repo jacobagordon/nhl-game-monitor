@@ -19,30 +19,33 @@ namespace nhl_game_monitor.src.Services
 
         public async Task CheckForCompletedGamesAsync(CancellationToken cancellationToken)
         {
-            await RefreshScheduleAsync(cancellationToken);
+            await CheckForCompletedGamesAsync(DateOnly.FromDateTime(DateTime.UtcNow), cancellationToken);
+        }
+
+        public async Task CheckForCompletedGamesAsync(DateOnly scheduleDate, CancellationToken cancellationToken)
+        {
+            await RefreshScheduleAsync(scheduleDate, cancellationToken);
             ActivateScheduledGames();
             await PollActiveGamesAsync(cancellationToken);
         }
 
-        private async Task RefreshScheduleAsync(CancellationToken cancellationToken)
+        private async Task RefreshScheduleAsync(DateOnly scheduleDate, CancellationToken cancellationToken)
         {
-            var today = DateOnly.FromDateTime(DateTime.UtcNow);
-
-            if (_state.LoadedScheduleDate == today)
+            if (_state.LoadedScheduleDate == scheduleDate)
             {
                 return;
             }
 
-            _logger.LogInformation("Refreshing schedule for {Date}", today);
+            _logger.LogInformation("Refreshing schedule for {Date}", scheduleDate);
 
-            var schedule = await GetTodayScheduleAsync(cancellationToken);
+            var schedule = await GetScheduleAsync(scheduleDate, cancellationToken);
 
             _state.ScheduledGames.Clear();
-            _state.LoadedScheduleDate = today;
+            _state.LoadedScheduleDate = scheduleDate;
 
             if (schedule.GameWeek == null)
             {
-                _logger.LogWarning("No game weeks found for {Date}", today);
+                _logger.LogWarning("No game weeks found for {Date}", scheduleDate);
                 return;
             }
 
@@ -50,7 +53,7 @@ namespace nhl_game_monitor.src.Services
 
             if (todayGames == null || todayGames.Games == null)
             {
-                _logger.LogInformation("No games found for {Date}", today);
+                _logger.LogInformation("No games found for {Date}", scheduleDate);
                 return;
             }
 
@@ -59,7 +62,7 @@ namespace nhl_game_monitor.src.Services
                 _state.ScheduledGames.Add(new ScheduledGame
                 {
                     Id = game.Id,
-                    ScheduleDate = today,
+                    ScheduleDate = scheduleDate,
                     StartTime = game.StartTime
                 });
             }
@@ -141,10 +144,10 @@ namespace nhl_game_monitor.src.Services
             }
         }
 
-        private async Task<Schedule> GetTodayScheduleAsync(CancellationToken cancellationToken)
+        private async Task<Schedule> GetScheduleAsync(DateOnly scheduleDate, CancellationToken cancellationToken)
         {
-            string today = DateTime.UtcNow.ToString("yyyy-MM-dd");
-            return await _apiAccessor.GetScheduleDateAsync(today, cancellationToken);
+            string dateString = scheduleDate.ToString("yyyy-MM-dd");
+            return await _apiAccessor.GetScheduleDateAsync(dateString, cancellationToken);
         }
     }
 }
