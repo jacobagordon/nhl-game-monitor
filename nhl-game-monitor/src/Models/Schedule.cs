@@ -25,6 +25,6 @@ namespace nhl_game_monitor.src.Models
         [JsonPropertyName("gameState")]
         public string? GameState { get; set; }
         [JsonPropertyName("startTimeUtc")]
-        public DateTime StartTime { get; set; }
+        public DateTimeOffset StartTime { get; set; }
     }
 }
