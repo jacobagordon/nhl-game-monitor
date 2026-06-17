@@ -1,0 +1,85 @@
+{
+    "bindings": [
+        {
+            "arguments": {
+            },
+            "destination": "player-stats-update",
+            "destination_type": "queue",
+            "routing_key": "game.completed",
+            "source": "nhl.events",
+            "vhost": "/"
+        }
+    ],
+    "exchanges": [
+        {
+            "arguments": {
+            },
+            "auto_delete": false,
+            "durable": true,
+            "internal": false,
+            "name": "nhl.events",
+            "type": "topic",
+            "vhost": "/"
+        }
+    ],
+    "global_parameters": [
+        {
+            "name": "internal_cluster_id",
+            "value": "rabbitmq-cluster-id-DBGtVmfF09bXU4r-Abu7Ow"
+        }
+    ],
+    "parameters": [
+    ],
+    "permissions": [
+        {
+            "configure": ".*",
+            "read": ".*",
+            "user": "admin",
+            "vhost": "/",
+            "write": ".*"
+        }
+    ],
+    "policies": [
+    ],
+    "product_name": "RabbitMQ",
+    "product_version": "3.13.7",
+    "queues": [
+        {
+            "arguments": {
+            },
+            "auto_delete": false,
+            "durable": true,
+            "name": "player-stats-update",
+            "vhost": "/"
+        }
+    ],
+    "rabbit_version": "3.13.7",
+    "rabbitmq_version": "3.13.7",
+    "topic_permissions": [
+    ],
+    "users": [
+        {
+            "hashing_algorithm": "rabbit_password_hashing_sha256",
+            "limits": {
+            },
+            "name": "admin",
+            "password_hash": "p0MN2/SE+9AyaWLAACUnUS1YGrmG0t7xy+ztPFwXoheAhVVV",
+            "tags": [
+                "administrator"
+            ]
+        }
+    ],
+    "vhosts": [
+        {
+            "description": "Default virtual host",
+            "metadata": {
+                "description": "Default virtual host",
+                "tags": [
+                ]
+            },
+            "name": "/",
+            "tags": [
+            ]
+        }
+    ]
+}
