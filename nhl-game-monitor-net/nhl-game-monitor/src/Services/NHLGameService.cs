@@ -1,6 +1,8 @@
 using nhl_game_monitor.src.Models;
 using nhl_game_monitor.src.State;
 using nhl_game_monitor.src.Accessors;
+using nhl_game_monitor.src.Messaging;
+using nhl_game_monitor.src.Models.Events;
 
 namespace nhl_game_monitor.src.Services
 {
@@ -9,12 +11,18 @@ namespace nhl_game_monitor.src.Services
         private readonly INHLApiAccessor _apiAccessor;
         private readonly GameMonitorState _state;
         private readonly ILogger<NHLGameService> _logger;
+        private readonly IEventPublisher _eventPublisher;
 
-        public NHLGameService(INHLApiAccessor apiAccessor, GameMonitorState state, ILogger<NHLGameService> logger)
+        public NHLGameService(
+            INHLApiAccessor apiAccessor,
+            GameMonitorState state,
+            ILogger<NHLGameService> logger,
+            IEventPublisher eventPublisher)
         {
             _apiAccessor = apiAccessor;
             _state = state;
             _logger = logger;
+            _eventPublisher = eventPublisher;
         }
 
         public async Task CheckForCompletedGamesAsync(CancellationToken cancellationToken)
@@ -133,7 +141,13 @@ namespace nhl_game_monitor.src.Services
                 {
                     _logger.LogInformation("Game {GameId} completed", activeGame.Id);
 
-                    // TODO: Publish RabbitMQ event
+                    await _eventPublisher.PublishEventAsync(new GameCompletedEvent
+                    {
+                        GameId = activeGame.Id,
+                        CorrelationId = Guid.NewGuid()
+                    }, "game.completed", cancellationToken);
+
+                    _logger.LogInformation("Published RabbitMQ event for completed game {GameId}", activeGame.Id);
 
                     _state.ActiveGames.Remove(activeGame);
 

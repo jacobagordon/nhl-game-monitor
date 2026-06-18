@@ -13,3 +13,12 @@ services:
       - RABBITMQ_DEFAULT_PASS=password
     command: >
       bash -c "rabbitmq-server"
+
+  nhl-game-monitor:
+    build:
+      context: ../nhl-game-monitor-net/nhl-game-monitor
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
+    ports:
+      - "5000:8080"
