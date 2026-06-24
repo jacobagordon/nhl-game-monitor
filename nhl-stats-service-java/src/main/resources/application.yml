@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: nhl-stats-service
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: admin
+    password: password
+    listener:
+      simple:
+        auto-startup: true
+    dynamic: false
+
+server:
+  port: 8080

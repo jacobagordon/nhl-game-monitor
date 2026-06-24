@@ -1,5 +1,3 @@
-using nhl_game_monitor.src.Models.Events;
-
 namespace nhl_game_monitor.src.Messaging;
 
 public interface IEventPublisher

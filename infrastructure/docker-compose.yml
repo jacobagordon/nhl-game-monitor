@@ -22,3 +22,12 @@ services:
       - rabbitmq
     ports:
       - "5000:8080"
+
+  nhl-stats-service:
+    build:
+      context: ../nhl-stats-service-java
+      dockerfile: Dockerfile
+    depends_on:
+      - rabbitmq
+    ports:
+      - "8080:8080"
