@@ -11,5 +11,8 @@ spring:
         auto-startup: true
     dynamic: false
 
+opensearch:
+  uris: http://opensearch:9200
+
 server:
   port: 8080

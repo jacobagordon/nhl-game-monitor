@@ -2,7 +2,14 @@ package com.game_monitor.nhl_stats_service.consumers;
 
 import com.game_monitor.nhl_stats_service.accessors.NhlApiAccessor;
 import com.game_monitor.nhl_stats_service.events.GameCompletedEvent;
+import com.game_monitor.nhl_stats_service.mappers.PlayerGameLogMapper;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
+import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse.TeamBoxscore;
+import com.game_monitor.nhl_stats_service.models.PlayerGameLogDocument;
+import com.game_monitor.nhl_stats_service.repositories.PlayerGameLogRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
@@ -11,9 +18,14 @@ import org.springframework.stereotype.Component;
 public class GameCompletedConsumer {
 
     private final NhlApiAccessor nhlApiAccessor;
+    private final PlayerGameLogRepository playerGameLogRepository;
+    private final PlayerGameLogMapper playerGameLogMapper;
 
-    public GameCompletedConsumer(NhlApiAccessor nhlApiAccessor) {
+    public GameCompletedConsumer(NhlApiAccessor nhlApiAccessor, PlayerGameLogRepository playerGameLogRepository,
+            PlayerGameLogMapper playerGameLogMapper) {
         this.nhlApiAccessor = nhlApiAccessor;
+        this.playerGameLogRepository = playerGameLogRepository;
+        this.playerGameLogMapper = playerGameLogMapper;
     }
 
     @RabbitListener(queues = "player-stats-update")
@@ -22,39 +34,66 @@ public class GameCompletedConsumer {
 
         GameBoxscoreResponse boxscore = nhlApiAccessor.getBoxscore(event.getGameId());
 
-        System.out.println("Received boxscore for game: " + event.getGameId());
+        TeamBoxscore homeTeamBoxscore = boxscore.getHomeTeam();
+        TeamBoxscore awayTeamBoxscore = boxscore.getAwayTeam();
 
-        System.out.println("Game ID: " + boxscore.getId());
-        System.out.println("Season: " + boxscore.getSeason());
-        System.out.println("Game date: " + boxscore.getGameDate());
-        System.out.println("Game state: " + boxscore.getGameState());
+        List<PlayerGameLogDocument> playerGameLogDocuments = new ArrayList<>();
 
-        System.out.println("Home team: " + boxscore.getHomeTeam().getAbbrev());
-        System.out.println("Away team: " + boxscore.getAwayTeam().getAbbrev());
-
-        System.out.println("Home forwards: " +
+        // Map home team forwards
+        playerGameLogDocuments.addAll(
                 boxscore.getPlayerByGameStats()
                         .getHomeTeam()
                         .getForwards()
-                        .size());
+                        .stream()
+                        .map(skater -> playerGameLogMapper.mapSkaterToDocument(
+                                boxscore,
+                                skater,
+                                homeTeamBoxscore,
+                                awayTeamBoxscore))
+                        .toList());
 
-        System.out.println("Home defense: " +
+        // Map home team defense
+        playerGameLogDocuments.addAll(
                 boxscore.getPlayerByGameStats()
                         .getHomeTeam()
                         .getDefense()
-                        .size());
+                        .stream()
+                        .map(skater -> playerGameLogMapper.mapSkaterToDocument(
+                                boxscore,
+                                skater,
+                                homeTeamBoxscore,
+                                awayTeamBoxscore))
+                        .toList());
 
-        var firstForward = boxscore.getPlayerByGameStats()
-                .getHomeTeam()
-                .getForwards()
-                .get(0);
+        // Map away team forwards
+        playerGameLogDocuments.addAll(
+                boxscore.getPlayerByGameStats()
+                        .getAwayTeam()
+                        .getForwards()
+                        .stream()
+                        .map(skater -> playerGameLogMapper.mapSkaterToDocument(
+                                boxscore,
+                                skater,
+                                awayTeamBoxscore,
+                                homeTeamBoxscore))
+                        .toList());
 
-        System.out.println("First home forward: " +
-                firstForward.getName().getDefaultName());
+        // Map away team defense
+        playerGameLogDocuments.addAll(
+                boxscore.getPlayerByGameStats()
+                        .getAwayTeam()
+                        .getDefense()
+                        .stream()
+                        .map(skater -> playerGameLogMapper.mapSkaterToDocument(
+                                boxscore,
+                                skater,
+                                awayTeamBoxscore,
+                                homeTeamBoxscore))
+                        .toList());
 
-        System.out.println("Goals: " + firstForward.getGoals());
-        System.out.println("Assists: " + firstForward.getAssists());
-        System.out.println("Points: " + firstForward.getPoints());
-        System.out.println("TOI: " + firstForward.getToi());
+        playerGameLogRepository.saveAll(playerGameLogDocuments);
+
+        System.out.println("Saved " + playerGameLogDocuments.size()
+                + " player game logs for game " + boxscore.getId());
     }
 }

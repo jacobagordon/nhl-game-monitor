@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data
 @Builder
-@Document(indexName = "player_game_logs")
+@Document(indexName = "player_game_logs", createIndex = false)
 public class PlayerGameLogDocument {
     @Id
     private String id;

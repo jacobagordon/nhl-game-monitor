@@ -29,6 +29,7 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - rabbitmq
+      - opensearch
     ports:
       - "8080:8080"
 
@@ -39,6 +40,7 @@ services:
       - discovery.type=single-node
       - OPENSEARCH_INITIAL_ADMIN_PASSWORD=NhlStats2026!
       - plugins.security.disabled=true
+      - network.host=0.0.0.0
       - bootstrap.memory_lock=true
       - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
     ulimits:
