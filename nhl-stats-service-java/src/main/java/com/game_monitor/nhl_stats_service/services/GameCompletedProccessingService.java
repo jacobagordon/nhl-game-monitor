@@ -10,10 +10,13 @@ import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
 public class GameCompletedProccessingService {
 
     private final NhlApiAccessor nhlApiAccessor;
+    private final GameSummaryService gameSummaryService;
     private final PlayerGameLogService playerGameLogService;
 
-    public GameCompletedProccessingService(NhlApiAccessor nhlApiAccessor, PlayerGameLogService playerGameLogService) {
+    public GameCompletedProccessingService(NhlApiAccessor nhlApiAccessor, GameSummaryService gameSummaryService,
+            PlayerGameLogService playerGameLogService) {
         this.nhlApiAccessor = nhlApiAccessor;
+        this.gameSummaryService = gameSummaryService;
         this.playerGameLogService = playerGameLogService;
     }
 
@@ -22,6 +25,7 @@ public class GameCompletedProccessingService {
 
         GameBoxscoreResponse boxscore = nhlApiAccessor.getBoxscore(event.getGameId());
 
+        gameSummaryService.saveGameSummary(boxscore);
         playerGameLogService.savePlayerGameLogs(boxscore);
 
         System.out.println("Processed game: " + boxscore.getId());
