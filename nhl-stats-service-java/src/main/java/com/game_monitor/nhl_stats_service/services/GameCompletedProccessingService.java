@@ -12,12 +12,14 @@ public class GameCompletedProccessingService {
     private final NhlApiAccessor nhlApiAccessor;
     private final GameSummaryService gameSummaryService;
     private final PlayerGameLogService playerGameLogService;
+    private final GoalieGameLogService goalieGameLogService;
 
     public GameCompletedProccessingService(NhlApiAccessor nhlApiAccessor, GameSummaryService gameSummaryService,
-            PlayerGameLogService playerGameLogService) {
+            PlayerGameLogService playerGameLogService, GoalieGameLogService goalieGameLogService) {
         this.nhlApiAccessor = nhlApiAccessor;
         this.gameSummaryService = gameSummaryService;
         this.playerGameLogService = playerGameLogService;
+        this.goalieGameLogService = goalieGameLogService;
     }
 
     public void process(GameCompletedEvent event) {
@@ -27,6 +29,7 @@ public class GameCompletedProccessingService {
 
         gameSummaryService.saveGameSummary(boxscore);
         playerGameLogService.savePlayerGameLogs(boxscore);
+        goalieGameLogService.saveGoalieGameLogs(boxscore);
 
         System.out.println("Processed game: " + boxscore.getId());
     }
