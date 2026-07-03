@@ -24,10 +24,6 @@ const navigationSlice = createSlice({
   },
 });
 
-export const {
-  openMobileMenu,
-  closeMobileMenu,
-  toggleMobileMenu,
-} = navigationSlice.actions;
+export const { openMobileMenu, closeMobileMenu, toggleMobileMenu } = navigationSlice.actions;
 
 export default navigationSlice.reducer;

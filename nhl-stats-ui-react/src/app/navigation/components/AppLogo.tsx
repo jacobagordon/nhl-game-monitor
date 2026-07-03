@@ -1,4 +1,8 @@
-import { StyledAppLogo, StyledAppLogoPrimary, StyledAppLogoSecondary } from "../styles/Navigation.style";
+import {
+  StyledAppLogo,
+  StyledAppLogoPrimary,
+  StyledAppLogoSecondary,
+} from "../styles/Navigation.style";
 
 export const AppLogo = () => {
   return (
@@ -7,4 +11,4 @@ export const AppLogo = () => {
       <StyledAppLogoSecondary>Game Monitor</StyledAppLogoSecondary>
     </StyledAppLogo>
   );
-}
+};

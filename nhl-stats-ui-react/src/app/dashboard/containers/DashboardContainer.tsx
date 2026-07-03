@@ -1,7 +1,11 @@
 import { StatSummaryCard } from "../components/StatSummaryCard";
 import { RecentGamesCard } from "../components/RecentGamesCard";
 import type { DashboardStat } from "../interfaces/DashboardStat";
-import { StyledDashboardGrid, StyledDashboardPage, StyledSummaryGrid } from "../styles/Dashboard.style";
+import {
+  StyledDashboardGrid,
+  StyledDashboardPage,
+  StyledSummaryGrid,
+} from "../styles/Dashboard.style";
 
 // This is just temporary data
 const summaryStats: DashboardStat[] = [
@@ -41,4 +45,4 @@ export const DashboardContainer = () => {
       </StyledDashboardGrid>
     </StyledDashboardPage>
   );
-}
+};

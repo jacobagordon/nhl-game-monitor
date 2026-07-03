@@ -16,11 +16,7 @@ export const StyledNavigationHeader = styled("header")`
   padding: 0 24px;
 
   border-bottom: 1px solid rgba(71, 104, 138, 0.3);
-  background: linear-gradient(
-    180deg,
-    rgba(4, 8, 13, 0.98),
-    rgba(2, 5, 9, 0.98)
-  );
+  background: linear-gradient(180deg, rgba(4, 8, 13, 0.98), rgba(2, 5, 9, 0.98));
   box-shadow:
     0 18px 50px rgba(0, 0, 0, 0.55),
     inset 0 -1px 0 rgba(0, 136, 255, 0.1);
@@ -116,11 +112,7 @@ export const StyledNavigationTabLink = styled(NavLink)`
 
   &.active {
     color: #ffffff;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 116, 255, 0.16),
-      rgba(0, 116, 255, 0.04)
-    );
+    background: linear-gradient(180deg, rgba(0, 116, 255, 0.16), rgba(0, 116, 255, 0.04));
     border-left-color: rgba(0, 136, 255, 0.18);
     border-right-color: rgba(0, 136, 255, 0.18);
     box-shadow:
@@ -151,11 +143,7 @@ export const StyledNavigationSettingsButton = styled(IconButton)`
   border-radius: 12px;
 
   color: #8d96a8;
-  background: linear-gradient(
-    180deg,
-    rgba(9, 15, 24, 0.98),
-    rgba(4, 8, 13, 0.98)
-  );
+  background: linear-gradient(180deg, rgba(9, 15, 24, 0.98), rgba(4, 8, 13, 0.98));
 
   transition:
     color 160ms ease,
@@ -166,11 +154,7 @@ export const StyledNavigationSettingsButton = styled(IconButton)`
   &:hover {
     color: #f8fbff;
     border-color: rgba(22, 139, 255, 0.72);
-    background: linear-gradient(
-      180deg,
-      rgba(12, 22, 36, 0.98),
-      rgba(4, 10, 18, 0.98)
-    );
+    background: linear-gradient(180deg, rgba(12, 22, 36, 0.98), rgba(4, 10, 18, 0.98));
     box-shadow:
       0 0 18px rgba(22, 139, 255, 0.2),
       inset 0 1px 0 rgba(96, 177, 255, 0.2);

@@ -1,5 +1,11 @@
 import type { DashboardStat } from "../interfaces/DashboardStat";
-import { StyledStatSummaryCard, StyledStatSummaryIcon, StyledStatSummaryLabel, StyledStatSummarySubtitle, StyledStatSummaryValue } from "../styles/Dashboard.style";
+import {
+  StyledStatSummaryCard,
+  StyledStatSummaryIcon,
+  StyledStatSummaryLabel,
+  StyledStatSummarySubtitle,
+  StyledStatSummaryValue,
+} from "../styles/Dashboard.style";
 
 interface StatSummaryCardProps {
   stat: DashboardStat;
@@ -17,4 +23,4 @@ export const StatSummaryCard = ({ stat }: StatSummaryCardProps) => {
       </div>
     </StyledStatSummaryCard>
   );
-}
+};

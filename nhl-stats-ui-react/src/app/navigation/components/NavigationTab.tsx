@@ -9,11 +9,9 @@ export const NavigationTab = ({ item }: NavigationTabProps) => {
   const Icon = item.icon;
 
   return (
-    <StyledNavigationTabLink
-      to={item.path}
-    >
+    <StyledNavigationTabLink to={item.path}>
       <Icon />
       <span>{item.label}</span>
     </StyledNavigationTabLink>
   );
-}
+};

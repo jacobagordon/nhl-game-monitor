@@ -49,11 +49,7 @@ export const StyledStatSummaryIcon = styled("div")`
   height: 42px;
   border-radius: 14px;
   border: 1px solid rgba(22, 139, 255, 0.6);
-  background: radial-gradient(
-    circle,
-    rgba(22, 139, 255, 0.22),
-    transparent 60%
-  );
+  background: radial-gradient(circle, rgba(22, 139, 255, 0.22), transparent 60%);
   box-shadow: 0 0 24px rgba(22, 139, 255, 0.18);
 `;
 

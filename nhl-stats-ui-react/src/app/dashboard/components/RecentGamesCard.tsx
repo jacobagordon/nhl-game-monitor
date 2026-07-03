@@ -1,6 +1,12 @@
 import { DashboardCard } from "./DashboardCard";
 import type { RecentGame } from "../interfaces/RecentGame";
-import { StyledRecentGameDate, StyledRecentGameMatchup, StyledRecentGameRow, StyledRecentGamesList, StyledRecentGameStatus } from "../styles/Dashboard.style";
+import {
+  StyledRecentGameDate,
+  StyledRecentGameMatchup,
+  StyledRecentGameRow,
+  StyledRecentGamesList,
+  StyledRecentGameStatus,
+} from "../styles/Dashboard.style";
 
 const recentGames: RecentGame[] = [
   {
@@ -53,4 +59,4 @@ export const RecentGamesCard = () => {
       </StyledRecentGamesList>
     </DashboardCard>
   );
-}
+};

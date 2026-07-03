@@ -2,10 +2,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { useNavigate } from "react-router-dom";
 import { AppLogo } from "../components/AppLogo";
 import { NavigationRow } from "../components/NavigationRow";
-import {
-  StyledNavigationHeader,
-  StyledNavigationSettingsButton,
-} from "../styles/Navigation.style";
+import { StyledNavigationHeader, StyledNavigationSettingsButton } from "../styles/Navigation.style";
 
 export const NavigationHeader = () => {
   const navigate = useNavigate();
@@ -24,4 +21,4 @@ export const NavigationHeader = () => {
       </StyledNavigationSettingsButton>
     </StyledNavigationHeader>
   );
-}
+};

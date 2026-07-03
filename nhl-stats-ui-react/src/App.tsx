@@ -1,7 +1,6 @@
 import { DashboardContainer } from "./app/dashboard/containers/DashboardContainer";
 import { NavigationHeader } from "./app/navigation/containers/NavigationHeader";
 
-
 const App = () => {
   return (
     <div className="app">
@@ -9,6 +8,6 @@ const App = () => {
       <DashboardContainer />
     </div>
   );
-}
+};
 
 export default App;
