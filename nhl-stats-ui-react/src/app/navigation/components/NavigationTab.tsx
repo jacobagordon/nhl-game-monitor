@@ -1,22 +1,19 @@
-import { NavLink } from "react-router-dom";
 import type { NavItem } from "../interfaces/NavItem";
+import { StyledNavigationTabLink } from "../styles/Navigation.style";
 
 interface NavigationTabProps {
   item: NavItem;
 }
 
-export function NavigationTab({ item }: NavigationTabProps) {
+export const NavigationTab = ({ item }: NavigationTabProps) => {
   const Icon = item.icon;
 
   return (
-    <NavLink
+    <StyledNavigationTabLink
       to={item.path}
-      className={({ isActive }) =>
-        isActive ? "navigation-tab navigation-tab-active" : "navigation-tab"
-      }
     >
-      <Icon size={17} strokeWidth={1.8} />
+      <Icon />
       <span>{item.label}</span>
-    </NavLink>
+    </StyledNavigationTabLink>
   );
 }

@@ -1,10 +1,12 @@
+import { DashboardContainer } from "./app/dashboard/containers/DashboardContainer";
 import { NavigationHeader } from "./app/navigation/containers/NavigationHeader";
 
 
-function App() {
+const App = () => {
   return (
     <div className="app">
       <NavigationHeader />
+      <DashboardContainer />
     </div>
   );
 }

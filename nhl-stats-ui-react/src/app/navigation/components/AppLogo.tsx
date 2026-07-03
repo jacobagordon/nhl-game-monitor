@@ -1,8 +1,10 @@
-export function AppLogo() {
+import { StyledAppLogo, StyledAppLogoPrimary, StyledAppLogoSecondary } from "../styles/Navigation.style";
+
+export const AppLogo = () => {
   return (
-    <div className="app-logo">
-      <div className="app-logo-primary">NHL</div>
-      <div className="app-logo-secondary">Game Monitor</div>
-    </div>
+    <StyledAppLogo>
+      <StyledAppLogoPrimary>NHL</StyledAppLogoPrimary>
+      <StyledAppLogoSecondary>Game Monitor</StyledAppLogoSecondary>
+    </StyledAppLogo>
   );
 }

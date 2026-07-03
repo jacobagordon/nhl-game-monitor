@@ -1,7 +1,7 @@
-import type { LucideIcon } from "lucide-react";
+import type { SvgIconComponent } from "@mui/icons-material";
 
 export interface NavItem {
   label: string;
   path: string;
-  icon: LucideIcon;
+  icon: SvgIconComponent;
 }
