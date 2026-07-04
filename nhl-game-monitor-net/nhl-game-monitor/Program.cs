@@ -34,9 +34,9 @@ app.MapGet("/health", async (RabbitMQHealthService rabbitMqHealthService) =>
 {
     var rabbitMqHealth = await rabbitMqHealthService.CheckHealthAsync();
 
-    var overallStatus = rabbitMqHealth.Status == "Healthy"
-        ? "Healthy"
-        : "Degraded";
+    var overallStatus = rabbitMqHealth.Status == "UP"
+        ? "UP"
+        : "DOWN";
 
     return Results.Ok(new
     {

@@ -10,9 +10,26 @@ spring:
       simple:
         auto-startup: true
     dynamic: false
+  elasticsearch:
+    uris: http://opensearch:9200
 
 opensearch:
   uris: http://opensearch:9200
 
 server:
   port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+infrastructure:
+  services:
+    dotnet-monitor:
+      name: nhl-game-monitor
+      health-url: http://nhl-game-monitor:8080/health

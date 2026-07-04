@@ -28,7 +28,7 @@ public class RabbitMQHealthService
 
             return new RabbitMQHealthResult
             {
-                Status = "Healthy",
+                Status = "UP",
                 Host = _rabbitMqSettings.HostName,
                 Port = _rabbitMqSettings.Port,
                 Error = null
@@ -38,7 +38,7 @@ public class RabbitMQHealthService
         {
             return new RabbitMQHealthResult
             {
-                Status = "Unhealthy",
+                Status = "DOWN",
                 Host = _rabbitMqSettings.HostName,
                 Port = _rabbitMqSettings.Port,
                 Error = ex.Message
