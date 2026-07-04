@@ -3,13 +3,13 @@ import { InfrastructurePage } from "./app/infrastructure/containers/Infrastructu
 import { NavigationHeader } from "./app/navigation/containers/NavigationHeader";
 
 const App = () => {
-  return (
-    <div className="app">
-      <NavigationHeader />
-      <DashboardContainer />
-      <InfrastructurePage />
-    </div>
-  );
+    return (
+        <div className="app">
+            <NavigationHeader />
+            <DashboardContainer />
+            <InfrastructurePage />
+        </div>
+    );
 };
 
 export default App;

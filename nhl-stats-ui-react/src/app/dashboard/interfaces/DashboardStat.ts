@@ -1,5 +1,5 @@
 export interface DashboardStat {
-  label: string;
-  value: string;
-  subtitle: string;
+    label: string;
+    value: string;
+    subtitle: string;
 }

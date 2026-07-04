@@ -1,27 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface NavigationState {
-  mobileMenuOpen: boolean;
+    mobileMenuOpen: boolean;
 }
 
 const initialState: NavigationState = {
-  mobileMenuOpen: false,
+    mobileMenuOpen: false,
 };
 
 const navigationSlice = createSlice({
-  name: "navigation",
-  initialState,
-  reducers: {
-    openMobileMenu: state => {
-      state.mobileMenuOpen = true;
+    name: "navigation",
+    initialState,
+    reducers: {
+        openMobileMenu: state => {
+            state.mobileMenuOpen = true;
+        },
+        closeMobileMenu: state => {
+            state.mobileMenuOpen = false;
+        },
+        toggleMobileMenu: state => {
+            state.mobileMenuOpen = !state.mobileMenuOpen;
+        },
     },
-    closeMobileMenu: state => {
-      state.mobileMenuOpen = false;
-    },
-    toggleMobileMenu: state => {
-      state.mobileMenuOpen = !state.mobileMenuOpen;
-    },
-  },
 });
 
 export const { openMobileMenu, closeMobileMenu, toggleMobileMenu } = navigationSlice.actions;

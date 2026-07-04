@@ -3,10 +3,10 @@ import navigationReducer from "./navigation/slices/navigationSlice";
 import { infrastructureReducer } from "./infrastructure/slices/infrastructureSlice";
 
 export const store = configureStore({
-  reducer: {
-    infrastructure: infrastructureReducer,
-    navigation: navigationReducer,
-  },
+    reducer: {
+        infrastructure: infrastructureReducer,
+        navigation: navigationReducer,
+    },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

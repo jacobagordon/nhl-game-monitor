@@ -12,23 +12,23 @@ import type { NavItem } from "../interfaces/NavItem";
 import { StyledNavigationRow } from "../styles/Navigation.style";
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", path: "/", icon: DashboardOutlinedIcon },
-  { label: "Games", path: "/games", icon: SportsHockeyOutlinedIcon },
-  { label: "Calendar", path: "/calendar", icon: CalendarMonthOutlinedIcon },
-  { label: "Standings", path: "/standings", icon: EmojiEventsOutlinedIcon },
-  { label: "Teams", path: "/teams", icon: ShieldOutlinedIcon },
-  { label: "Players", path: "/players", icon: PersonOutlineOutlinedIcon },
-  { label: "Goalies", path: "/goalies", icon: SportsOutlinedIcon },
-  { label: "Stats", path: "/stats", icon: BarChartOutlinedIcon },
-  { label: "Streaks", path: "/streaks", icon: TrendingUpOutlinedIcon },
+    { label: "Dashboard", path: "/", icon: DashboardOutlinedIcon },
+    { label: "Games", path: "/games", icon: SportsHockeyOutlinedIcon },
+    { label: "Calendar", path: "/calendar", icon: CalendarMonthOutlinedIcon },
+    { label: "Standings", path: "/standings", icon: EmojiEventsOutlinedIcon },
+    { label: "Teams", path: "/teams", icon: ShieldOutlinedIcon },
+    { label: "Players", path: "/players", icon: PersonOutlineOutlinedIcon },
+    { label: "Goalies", path: "/goalies", icon: SportsOutlinedIcon },
+    { label: "Stats", path: "/stats", icon: BarChartOutlinedIcon },
+    { label: "Streaks", path: "/streaks", icon: TrendingUpOutlinedIcon },
 ];
 
 export const NavigationRow = () => {
-  return (
-    <StyledNavigationRow>
-      {navItems.map(item => (
-        <NavigationTab key={item.path} item={item} />
-      ))}
-    </StyledNavigationRow>
-  );
+    return (
+        <StyledNavigationRow>
+            {navItems.map(item => (
+                <NavigationTab key={item.path} item={item} />
+            ))}
+        </StyledNavigationRow>
+    );
 };
