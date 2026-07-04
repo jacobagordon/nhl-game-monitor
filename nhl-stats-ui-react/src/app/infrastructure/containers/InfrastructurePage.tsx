@@ -10,7 +10,7 @@ import {
 } from "../selectors/infrastructureSelectors";
 import { fetchInfrastructureHealth } from "../slices/infrastructureSlice";
 
-export function InfrastructurePage() {
+export const InfrastructurePage = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const status = useSelector(selectInfrastructureStatus);
@@ -48,4 +48,4 @@ export function InfrastructurePage() {
             )}
         </div>
     );
-}
+};
