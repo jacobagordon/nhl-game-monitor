@@ -64,5 +64,30 @@ services:
     depends_on:
       - opensearch
 
+  nhl-stats-ui:
+    build:
+      context: ../nhl-stats-ui-react
+      dockerfile: Dockerfile
+    container_name: nhl-stats-ui
+    ports:
+      - "5173:80"
+    depends_on:
+      - nhl-stats-service
+
+  nhl-stats-ui-dev:
+    build:
+      context: ../nhl-stats-ui-react
+      dockerfile: Dockerfile.dev
+    container_name: nhl-stats-ui-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../nhl-stats-ui-react:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - nhl-stats-service
+
 volumes:
   opensearch-data:
