@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { DashboardContainer } from "./app/dashboard/containers/DashboardContainer";
-import { InfrastructurePage } from "./app/infrastructure/containers/InfrastructurePage";
 import { NavigationHeader } from "./app/navigation/containers/NavigationHeader";
+import { InfrastructurePage } from "./app/infrastructure/components/InfrastructurePage";
 
 const App = () => {
     return (

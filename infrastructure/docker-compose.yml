@@ -65,6 +65,8 @@ services:
       - opensearch
 
   nhl-stats-ui:
+    profiles:
+      - prod
     build:
       context: ../nhl-stats-ui-react
       dockerfile: Dockerfile
@@ -75,6 +77,8 @@ services:
       - nhl-stats-service
 
   nhl-stats-ui-dev:
+    profiles:
+      - dev
     build:
       context: ../nhl-stats-ui-react
       dockerfile: Dockerfile.dev
