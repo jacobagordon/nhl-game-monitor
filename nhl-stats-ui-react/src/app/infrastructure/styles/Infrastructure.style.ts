@@ -63,7 +63,7 @@ export const StyledStatusBadge = styled("span")<{ status: string }>`
     letter-spacing: 0.04em;
     color: ${({ status }) => (status === "UP" ? "#86efac" : "#fca5a5")};
     background: ${({ status }) =>
-      status === "UP" ? "rgba(34, 197, 94, 0.12)" : "rgba(239, 68, 68, 0.12)"};
+        status === "UP" ? "rgba(34, 197, 94, 0.12)" : "rgba(239, 68, 68, 0.12)"};
     border: 1px solid
         ${({ status }) => (status === "UP" ? "rgba(34, 197, 94, 0.28)" : "rgba(239, 68, 68, 0.28)")};
 `;
@@ -90,4 +90,48 @@ export const StyledEmptyDetails = styled("p")`
     margin: 0;
     color: #7d8a99;
     font-size: 13px;
+`;
+
+export const StyledInfrastructureRefreshButton = styled("button")`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 36px;
+    padding: 0 14px;
+
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 10px;
+
+    background: rgba(14, 165, 233, 0.08);
+    color: #bae6fd;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+
+    cursor: pointer;
+    transition:
+        background 140ms ease,
+        border-color 140ms ease,
+        color 140ms ease,
+        transform 140ms ease;
+
+    &:hover {
+        background: rgba(14, 165, 233, 0.14);
+        border-color: rgba(56, 189, 248, 0.65);
+        color: #e0f2fe;
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+        transform: none;
+    }
 `;

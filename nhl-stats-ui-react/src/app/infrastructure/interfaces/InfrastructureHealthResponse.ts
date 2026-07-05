@@ -1,4 +1,4 @@
-export type InfrastructureStatus = "UP" | "DOWN";
+export type InfrastructureStatus = "UP" | "DOWN" | "UNKNOWN";
 
 export interface InfrastructureHealthResponse {
     service: string;

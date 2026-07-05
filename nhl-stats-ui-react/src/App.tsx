@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { DashboardContainer } from "./app/dashboard/containers/DashboardContainer";
 import { NavigationHeader } from "./app/navigation/containers/NavigationHeader";
-import { InfrastructurePage } from "./app/infrastructure/components/InfrastructurePage";
+import { InfrastructureContainer } from "./app/infrastructure/containers/InfrastructureContainer";
 
 const App = () => {
     return (
@@ -9,7 +9,7 @@ const App = () => {
             <NavigationHeader />
             <Routes>
                 <Route path="/" element={<DashboardContainer />} />
-                <Route path="/infrastructure" element={<InfrastructurePage />} />
+                <Route path="/infrastructure" element={<InfrastructureContainer />} />
             </Routes>
         </div>
     );

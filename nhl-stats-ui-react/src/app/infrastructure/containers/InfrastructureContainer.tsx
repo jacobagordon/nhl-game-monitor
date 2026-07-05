@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch } from "../../store";
-import { InfrastructureHealthCard } from "../components/InfrastructureHealthCard";
+import { connect } from "react-redux";
+import type { AppDispatch, RootState } from "../../store";
 import {
     selectInfrastructureCheckedAtUtc,
     selectInfrastructureComponents,
@@ -10,54 +8,21 @@ import {
     selectInfrastructureStatus,
 } from "../selectors/infrastructureSelectors";
 import { fetchInfrastructureHealth } from "../slices/infrastructureSlice";
-import {
-    StyledInfrastructureGrid,
-    StyledInfrastructureHeader,
-    StyledInfrastructurePage,
-    StyledInfrastructureSubtitle,
-    StyledInfrastructureTitle,
-} from "../styles/Infrastructure.style";
+import { InfrastructurePage } from "../components/InfrastructurePage";
 
-export const InfrastructureContainer = () => {
-    const dispatch = useDispatch<AppDispatch>();
+const mapStateToProps = (state: RootState) => ({
+    status: selectInfrastructureStatus(state),
+    components: selectInfrastructureComponents(state),
+    checkedAtUtc: selectInfrastructureCheckedAtUtc(state),
+    isLoading: selectInfrastructureIsLoading(state),
+    error: selectInfrastructureError(state),
+});
 
-    const status = useSelector(selectInfrastructureStatus);
-    const components = useSelector(selectInfrastructureComponents);
-    const checkedAtUtc = useSelector(selectInfrastructureCheckedAtUtc);
-    const isLoading = useSelector(selectInfrastructureIsLoading);
-    const error = useSelector(selectInfrastructureError);
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    fetchInfrastructureHealth: () => dispatch(fetchInfrastructureHealth()),
+});
 
-    useEffect(() => {
-        dispatch(fetchInfrastructureHealth());
-    }, [dispatch]);
-
-    return (
-        <StyledInfrastructurePage>
-            <StyledInfrastructureHeader>
-                <StyledInfrastructureTitle>Infrastructure</StyledInfrastructureTitle>
-                <StyledInfrastructureSubtitle>
-                    Overall status: {status}
-                    {checkedAtUtc
-                        ? ` · Last checked: ${new Date(checkedAtUtc).toLocaleString()}`
-                        : ""}
-                </StyledInfrastructureSubtitle>
-            </StyledInfrastructureHeader>
-
-            {isLoading && (
-                <StyledInfrastructureSubtitle>
-                    Loading infrastructure health...
-                </StyledInfrastructureSubtitle>
-            )}
-
-            {error && <StyledInfrastructureSubtitle>{error}</StyledInfrastructureSubtitle>}
-
-            {!isLoading && !error && (
-                <StyledInfrastructureGrid>
-                    {components.map(component => (
-                        <InfrastructureHealthCard key={component.name} component={component} />
-                    ))}
-                </StyledInfrastructureGrid>
-            )}
-        </StyledInfrastructurePage>
-    );
-};
+export const InfrastructureContainer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(InfrastructurePage);
