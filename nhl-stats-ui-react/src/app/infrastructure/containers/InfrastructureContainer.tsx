@@ -7,7 +7,10 @@ import {
     selectInfrastructureIsLoading,
     selectInfrastructureStatus,
 } from "../selectors/infrastructureSelectors";
-import { fetchInfrastructureHealth } from "../slices/infrastructureSlice";
+import {
+    fetchInfrastructureHealth,
+    triggerScheduleDateProcessing,
+} from "../slices/infrastructureSlice";
 import { InfrastructurePage } from "../components/InfrastructurePage";
 
 const mapStateToProps = (state: RootState) => ({
@@ -20,6 +23,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     fetchInfrastructureHealth: () => dispatch(fetchInfrastructureHealth()),
+    triggerScheduleDateProcessing: (date: string) => dispatch(triggerScheduleDateProcessing(date)),
 });
 
 export const InfrastructureContainer = connect(

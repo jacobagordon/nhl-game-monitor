@@ -6,12 +6,14 @@ import { InfrastructureHealthCard } from "./InfrastructureHealthCard";
 import {
     StyledInfrastructureGrid,
     StyledInfrastructureHeader,
+    StyledInfrastructureHeaderTop,
     StyledInfrastructurePage,
     StyledInfrastructureRefreshButton,
     StyledInfrastructureSubtitle,
     StyledInfrastructureTitle,
 } from "../styles/Infrastructure.style";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { InfrastructurePageHeader } from "./InfrastructurePageHeader";
 
 interface InfrastructurePageProps {
     status: InfrastructureStatus;
@@ -20,6 +22,7 @@ interface InfrastructurePageProps {
     isLoading: boolean;
     error: string | null;
     fetchInfrastructureHealth: () => void;
+    triggerScheduleDateProcessing: (date: string) => void;
 }
 
 export const InfrastructurePage = ({
@@ -29,30 +32,42 @@ export const InfrastructurePage = ({
     isLoading,
     error,
     fetchInfrastructureHealth,
+    triggerScheduleDateProcessing,
 }: InfrastructurePageProps) => {
     useEffect(() => {
         fetchInfrastructureHealth();
     }, [fetchInfrastructureHealth]);
 
+    const [scheduleDate, setScheduleDate] = useState<string>(
+        new Date().toISOString().split("T")[0]
+    );
+
     return (
         <StyledInfrastructurePage>
-            <StyledInfrastructureHeader>
-                <StyledInfrastructureTitle>Infrastructure</StyledInfrastructureTitle>
-                <StyledInfrastructureSubtitle>
-                    Overall status: {status}
-                    {checkedAtUtc
-                        ? ` · Last checked: ${new Date(checkedAtUtc).toLocaleString()}`
-                        : ""}
-                </StyledInfrastructureSubtitle>
+            <InfrastructurePageHeader
+                status={status}
+                checkedAtUtc={checkedAtUtc}
+                isLoading={isLoading}
+                fetchInfrastructureHealth={fetchInfrastructureHealth}
+            />
+
+            <div>
+                <label htmlFor="schedule-date">Schedule Date</label>
+
+                <input
+                    id="schedule-date"
+                    type="date"
+                    value={scheduleDate}
+                    onChange={event => setScheduleDate(event.target.value)}
+                />
 
                 <StyledInfrastructureRefreshButton
                     type="button"
-                    onClick={fetchInfrastructureHealth}
-                    disabled={isLoading}
+                    onClick={() => triggerScheduleDateProcessing(scheduleDate)}
                 >
-                    Refresh
+                    Process Game Logs
                 </StyledInfrastructureRefreshButton>
-            </StyledInfrastructureHeader>
+            </div>
 
             {isLoading && (
                 <StyledInfrastructureSubtitle>

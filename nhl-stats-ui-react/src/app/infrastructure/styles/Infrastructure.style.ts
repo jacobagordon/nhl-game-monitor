@@ -135,3 +135,10 @@ export const StyledInfrastructureRefreshButton = styled("button")`
         transform: none;
     }
 `;
+
+export const StyledInfrastructureHeaderTop = styled("div")`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+`;

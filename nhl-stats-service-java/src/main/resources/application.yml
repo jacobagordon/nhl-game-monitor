@@ -33,3 +33,4 @@ infrastructure:
     dotnet-monitor:
       name: nhl-game-monitor
       health-url: http://nhl-game-monitor:8080/health
+      schedule-date-url: http://nhl-game-monitor:8080/api/scheduleDate

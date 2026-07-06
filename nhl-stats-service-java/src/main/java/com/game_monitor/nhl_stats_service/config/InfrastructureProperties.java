@@ -29,6 +29,7 @@ public class InfrastructureProperties {
     public static class ExternalService {
         private String name;
         private String healthUrl;
+        private String scheduleDateUrl;
 
         public String getName() {
             return name;
@@ -44,6 +45,14 @@ public class InfrastructureProperties {
 
         public void setHealthUrl(String healthUrl) {
             this.healthUrl = healthUrl;
+        }
+
+        public String getScheduleDateUrl() {
+            return scheduleDateUrl;
+        }
+
+        public void setScheduleDateUrl(String scheduleDateUrl) {
+            this.scheduleDateUrl = scheduleDateUrl;
         }
     }
 }

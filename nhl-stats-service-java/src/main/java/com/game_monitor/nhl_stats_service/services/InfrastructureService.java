@@ -8,11 +8,11 @@ import org.springframework.web.client.RestClient;
 import com.game_monitor.nhl_stats_service.config.InfrastructureProperties;
 
 @Service
-public class InfrastructureHealthService {
+public class InfrastructureService {
     private final RestClient restClient;
     private final InfrastructureProperties infrastructureProperties;
 
-    public InfrastructureHealthService(
+    public InfrastructureService(
             RestClient.Builder restClientBuilder,
             InfrastructureProperties infrastructureProperties
     ) {
@@ -20,7 +20,7 @@ public class InfrastructureHealthService {
         this.infrastructureProperties = infrastructureProperties;
     }
 
-    public ExternalHealthResponse getDotnetMonitorHealth() {
+    public ExternalResponse getDotnetMonitorHealth() {
         InfrastructureProperties.ExternalService dotnetMonitor =
                 infrastructureProperties.getServices().getDotnetMonitor();
 
@@ -31,14 +31,14 @@ public class InfrastructureHealthService {
                     .body(DotnetMonitorHealthResponse.class);
 
             if (response == null) {
-                return new ExternalHealthResponse(
+                return new ExternalResponse(
                         dotnetMonitor.getName(),
                         "UNKNOWN",
                         Map.of("error", "No response body returned from health endpoint")
                 );
             }
 
-            return new ExternalHealthResponse(
+            return new ExternalResponse(
                     dotnetMonitor.getName(),
                     response.status(),
                     Map.of(
@@ -47,7 +47,7 @@ public class InfrastructureHealthService {
                     )
             );
         } catch (Exception exception) {
-            return new ExternalHealthResponse(
+            return new ExternalResponse(
                     dotnetMonitor.getName(),
                     "DOWN",
                     Map.of("error", exception.getMessage())
@@ -55,7 +55,30 @@ public class InfrastructureHealthService {
         }
     }
 
-    public record ExternalHealthResponse(
+    public ExternalResponse scheduleDateProcessing(String date) {
+        InfrastructureProperties.ExternalService dotnetMonitor = infrastructureProperties.getServices().getDotnetMonitor();
+
+        try {
+                Map<String, Object> response = restClient.put()
+                        .uri(dotnetMonitor.getScheduleDateUrl() + "/{date}", date)
+                        .retrieve()
+                        .body(Map.class);
+
+                return new ExternalResponse(
+                        dotnetMonitor.getName(),
+                        "SUCCESS",
+                        response
+                );
+        } catch (Exception exception) {
+                return new ExternalResponse(
+                        dotnetMonitor.getName(),
+                        "FAILED",
+                        Map.of("error", exception.getMessage())
+                );
+        }
+    }
+
+    public record ExternalResponse(
             String name,
             String status,
             Map<String, Object> details

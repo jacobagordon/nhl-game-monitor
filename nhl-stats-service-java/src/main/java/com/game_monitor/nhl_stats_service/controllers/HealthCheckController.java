@@ -5,9 +5,12 @@ import org.springframework.boot.health.actuate.endpoint.HealthDescriptor;
 import org.springframework.boot.health.actuate.endpoint.HealthEndpoint;
 import org.springframework.boot.health.actuate.endpoint.IndicatedHealthDescriptor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.game_monitor.nhl_stats_service.services.InfrastructureHealthService;
+import com.game_monitor.nhl_stats_service.services.InfrastructureService;
+import com.game_monitor.nhl_stats_service.services.InfrastructureService.ExternalResponse;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,9 +20,9 @@ import java.util.Map;
 @RestController
 public class HealthCheckController {
     private final HealthEndpoint healthEndpoint;
-    private final InfrastructureHealthService infrastructureHealthService;
+    private final InfrastructureService infrastructureHealthService;
 
-    public HealthCheckController(HealthEndpoint healthEndpoint, InfrastructureHealthService infrastructureHealthService) {
+    public HealthCheckController(HealthEndpoint healthEndpoint, InfrastructureService infrastructureHealthService) {
         this.healthEndpoint = healthEndpoint;
         this.infrastructureHealthService = infrastructureHealthService;
     }
@@ -38,7 +41,7 @@ public class HealthCheckController {
                 )
         );
 
-        InfrastructureHealthService.ExternalHealthResponse dotnetHealth = infrastructureHealthService.getDotnetMonitorHealth();
+        InfrastructureService.ExternalResponse dotnetHealth = infrastructureHealthService.getDotnetMonitorHealth();
 
         components.add(
             new InfrastructureComponentHealth(
@@ -72,6 +75,13 @@ public class HealthCheckController {
                 Instant.now(),
                 components
         );
+    }
+
+    @PutMapping("/api/schedule-date/{date}")
+    public ExternalResponse triggerScheduleDateProcessing(
+        @PathVariable String date
+    ) {
+        return infrastructureHealthService.scheduleDateProcessing(date);
     }
 
     private Map<String, Object> getDetails(HealthDescriptor healthDescriptor) {

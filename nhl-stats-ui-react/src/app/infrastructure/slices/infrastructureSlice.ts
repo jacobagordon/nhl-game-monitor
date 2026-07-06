@@ -5,12 +5,16 @@ interface InfrastructureState {
     health: InfrastructureHealthResponse | null;
     isLoading: boolean;
     error: string | null;
+    isScheduleDateLoading: boolean;
+    scheduleDateActionError: string | null;
 }
 
 const initialState: InfrastructureState = {
     health: null,
     isLoading: false,
     error: null,
+    isScheduleDateLoading: false,
+    scheduleDateActionError: null,
 };
 
 export const fetchInfrastructureHealth = createAsyncThunk<
@@ -26,6 +30,26 @@ export const fetchInfrastructureHealth = createAsyncThunk<
         }
 
         return (await response.json()) as InfrastructureHealthResponse;
+    } catch (error) {
+        return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
+    }
+});
+
+export const triggerScheduleDateProcessing = createAsyncThunk<
+    unknown,
+    string,
+    { rejectValue: string }
+>("infrastructure/triggerScheduleDateProcessing", async (date, { rejectWithValue }) => {
+    try {
+        const response = await fetch(`/api/schedule-date/${date}`, {
+            method: "PUT",
+        });
+
+        if (!response.ok) {
+            return rejectWithValue(`Schedule date request failed with status ${response.status}`);
+        }
+
+        return await response.json();
     } catch (error) {
         return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
     }
@@ -48,6 +72,18 @@ const infrastructureSlice = createSlice({
             .addCase(fetchInfrastructureHealth.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload ?? "Failed to fetch infrastructure health";
+            })
+            .addCase(triggerScheduleDateProcessing.pending, state => {
+                state.isScheduleDateLoading = true;
+                state.scheduleDateActionError = null;
+            })
+            .addCase(triggerScheduleDateProcessing.fulfilled, state => {
+                state.isScheduleDateLoading = false;
+            })
+            .addCase(triggerScheduleDateProcessing.rejected, (state, action) => {
+                state.isScheduleDateLoading = false;
+                state.scheduleDateActionError =
+                    action.payload ?? "Failed to trigger schedule date processing";
             });
     },
 });
