@@ -2,11 +2,10 @@ package com.game_monitor.nhl_stats_service.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class GameBoxscoreResponse {
@@ -17,15 +16,19 @@ public class GameBoxscoreResponse {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate gameDate;
+
     @JsonProperty("startTimeUTC")
     private Instant startTimeUtc;
+
     private String gameState;
     private String gameScheduleState;
 
     private Name venue;
     private Name venueLocation;
+
     @JsonProperty("easternUTCOffset")
     private String easternUtcOffset;
+
     @JsonProperty("venueUTCOffset")
     private String venueUtcOffset;
 
@@ -65,15 +68,21 @@ public class GameBoxscoreResponse {
     @Data
     public static class TeamBoxscore {
         private int id;
+
         @JsonProperty("commonName")
         private Name teamName;
+
         private String abbrev;
         private Name placeName;
+
         @JsonProperty("logo")
         private String logoUrl;
+
         @JsonProperty("darkLogo")
         private String darkLogoUrl;
+
         private int score;
+
         @JsonProperty("sog")
         private int shotsOnGoal;
     }

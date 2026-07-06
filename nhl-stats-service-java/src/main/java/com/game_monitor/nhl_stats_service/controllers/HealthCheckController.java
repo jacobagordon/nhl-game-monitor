@@ -1,5 +1,11 @@
 package com.game_monitor.nhl_stats_service.controllers;
 
+import com.game_monitor.nhl_stats_service.services.InfrastructureService;
+import com.game_monitor.nhl_stats_service.services.InfrastructureService.ExternalResponse;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.springframework.boot.health.actuate.endpoint.CompositeHealthDescriptor;
 import org.springframework.boot.health.actuate.endpoint.HealthDescriptor;
 import org.springframework.boot.health.actuate.endpoint.HealthEndpoint;
@@ -9,20 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.game_monitor.nhl_stats_service.services.InfrastructureService;
-import com.game_monitor.nhl_stats_service.services.InfrastructureService.ExternalResponse;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 @RestController
 public class HealthCheckController {
     private final HealthEndpoint healthEndpoint;
     private final InfrastructureService infrastructureHealthService;
 
-    public HealthCheckController(HealthEndpoint healthEndpoint, InfrastructureService infrastructureHealthService) {
+    public HealthCheckController(
+            HealthEndpoint healthEndpoint, InfrastructureService infrastructureHealthService) {
         this.healthEndpoint = healthEndpoint;
         this.infrastructureHealthService = infrastructureHealthService;
     }
@@ -35,52 +34,37 @@ public class HealthCheckController {
 
         components.add(
                 new InfrastructureComponentHealth(
-                        "nhl-stats-service-api",
-                        health.getStatus().getCode(),
-                        null
-                )
-        );
+                        "nhl-stats-service-api", health.getStatus().getCode(), null));
 
         InfrastructureService.ExternalResponse dotnetHealth = infrastructureHealthService.getDotnetMonitorHealth();
 
         components.add(
-            new InfrastructureComponentHealth(
-                dotnetHealth.name(),
-                dotnetHealth.status(),
-                dotnetHealth.details()
-            )
-        );
+                new InfrastructureComponentHealth(
+                        dotnetHealth.name(), dotnetHealth.status(), dotnetHealth.details()));
 
         if (health instanceof CompositeHealthDescriptor compositeHealth) {
             Map<String, HealthDescriptor> actuatorComponents = compositeHealth.getComponents();
 
             if (actuatorComponents != null) {
-                actuatorComponents.forEach((name, componentHealth) -> {
-                    if (shouldIncludeComponent(name)) {
-                        components.add(
-                                new InfrastructureComponentHealth(
-                                        formatComponentName(name),
-                                        componentHealth.getStatus().getCode(),
-                                        getDetails(componentHealth)
-                                )
-                        );
-                    }
-                });
+                actuatorComponents.forEach(
+                        (name, componentHealth) -> {
+                            if (shouldIncludeComponent(name)) {
+                                components.add(
+                                        new InfrastructureComponentHealth(
+                                                formatComponentName(name),
+                                                componentHealth.getStatus().getCode(),
+                                                getDetails(componentHealth)));
+                            }
+                        });
             }
         }
 
         return new InfrastructureHealthResponse(
-                "nhl-stats-service-api",
-                health.getStatus().getCode(),
-                Instant.now(),
-                components
-        );
+                "nhl-stats-service-api", health.getStatus().getCode(), Instant.now(), components);
     }
 
     @PutMapping("/api/schedule-date/{date}")
-    public ExternalResponse triggerScheduleDateProcessing(
-        @PathVariable String date
-    ) {
+    public ExternalResponse triggerScheduleDateProcessing(@PathVariable String date) {
         return infrastructureHealthService.scheduleDateProcessing(date);
     }
 
@@ -113,14 +97,10 @@ public class HealthCheckController {
             String service,
             String status,
             Instant checkedAtUtc,
-            List<InfrastructureComponentHealth> components
-    ) {
+            List<InfrastructureComponentHealth> components) {
     }
 
     public record InfrastructureComponentHealth(
-            String name,
-            String status,
-            Map<String, Object> details
-    ) {
+            String name, String status, Map<String, Object> details) {
     }
 }

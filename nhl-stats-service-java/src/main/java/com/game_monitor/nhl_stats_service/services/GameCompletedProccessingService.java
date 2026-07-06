@@ -1,10 +1,9 @@
 package com.game_monitor.nhl_stats_service.services;
 
-import org.springframework.stereotype.Service;
-
 import com.game_monitor.nhl_stats_service.accessors.NhlApiAccessor;
 import com.game_monitor.nhl_stats_service.events.GameCompletedEvent;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GameCompletedProccessingService {
@@ -15,8 +14,11 @@ public class GameCompletedProccessingService {
     private final GoalieGameLogService goalieGameLogService;
     private final TeamGameLogService teamGameLogService;
 
-    public GameCompletedProccessingService(NhlApiAccessor nhlApiAccessor, GameSummaryService gameSummaryService,
-            PlayerGameLogService playerGameLogService, GoalieGameLogService goalieGameLogService,
+    public GameCompletedProccessingService(
+            NhlApiAccessor nhlApiAccessor,
+            GameSummaryService gameSummaryService,
+            PlayerGameLogService playerGameLogService,
+            GoalieGameLogService goalieGameLogService,
             TeamGameLogService teamGameLogService) {
         this.nhlApiAccessor = nhlApiAccessor;
         this.gameSummaryService = gameSummaryService;

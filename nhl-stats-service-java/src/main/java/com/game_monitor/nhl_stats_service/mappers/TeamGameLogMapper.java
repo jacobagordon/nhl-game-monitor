@@ -3,17 +3,13 @@ package com.game_monitor.nhl_stats_service.mappers;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse.TeamBoxscore;
 import com.game_monitor.nhl_stats_service.models.TeamGameLogDocument;
-
 import org.springframework.stereotype.Component;
 
 @Component
 public class TeamGameLogMapper {
 
     public TeamGameLogDocument mapTeamToDocument(
-            GameBoxscoreResponse boxscore,
-            TeamBoxscore team,
-            TeamBoxscore opponent,
-            boolean isHome) {
+            GameBoxscoreResponse boxscore, TeamBoxscore team, TeamBoxscore opponent, boolean isHome) {
         String finalPeriodType = getFinalPeriodType(boxscore);
 
         int goalsFor = team.getScore();
@@ -27,47 +23,37 @@ public class TeamGameLogMapper {
 
         return TeamGameLogDocument.builder()
                 .id(boxscore.getId() + "-" + team.getId())
-
                 .gameId(boxscore.getId())
                 .season(boxscore.getSeason())
                 .gameType(boxscore.getGameType())
-
                 .gameDate(boxscore.getGameDate())
                 .gameStartTimeUtc(boxscore.getStartTimeUtc())
                 .gameState(boxscore.getGameState())
-
                 .teamId(team.getId())
                 .teamAbbreviation(team.getAbbrev())
                 .teamName(getDefaultName(team.getTeamName()))
                 .teamPlaceName(getDefaultName(team.getPlaceName()))
                 .teamLogoUrl(team.getLogoUrl())
-
                 .opponentTeamId(opponent.getId())
                 .opponentTeamAbbreviation(opponent.getAbbrev())
                 .opponentTeamName(getDefaultName(opponent.getTeamName()))
                 .opponentTeamPlaceName(getDefaultName(opponent.getPlaceName()))
                 .opponentTeamLogoUrl(opponent.getLogoUrl())
-
                 .home(isHome)
                 .away(!isHome)
-
                 .goalsFor(goalsFor)
                 .goalsAgainst(goalsAgainst)
                 .goalDifferential(goalsFor - goalsAgainst)
-
                 .shotsFor(shotsFor)
                 .shotsAgainst(shotsAgainst)
                 .shotDifferential(shotsFor - shotsAgainst)
-
                 .result(getGameResult(won, lost, finalPeriodType))
                 .won(won)
                 .lost(lost)
-
                 .finalPeriodType(finalPeriodType)
                 .wentToOvertime(isOvertime(finalPeriodType))
                 .wentToShootout(isShootout(finalPeriodType))
                 .completedInRegulation(isRegulation(finalPeriodType))
-
                 .build();
     }
 

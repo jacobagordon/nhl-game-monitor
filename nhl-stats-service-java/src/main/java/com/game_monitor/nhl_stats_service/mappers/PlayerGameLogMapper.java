@@ -2,7 +2,6 @@ package com.game_monitor.nhl_stats_service.mappers;
 
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
 import com.game_monitor.nhl_stats_service.models.PlayerGameLogDocument;
-
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,29 +14,23 @@ public class PlayerGameLogMapper {
             GameBoxscoreResponse.TeamBoxscore opponent) {
         return PlayerGameLogDocument.builder()
                 .id(boxscore.getId() + "-" + skater.getPlayerId())
-
                 .gameId(boxscore.getId())
                 .season(boxscore.getSeason())
                 .gameDate(boxscore.getGameDate())
                 .gameStartTimeUtc(boxscore.getStartTimeUtc())
-
                 .playerId(skater.getPlayerId())
                 .playerDisplayName(getDefaultName(skater.getName()))
                 .playerFirstName(null)
                 .playerLastName(null)
                 .playerFullName(null)
-
                 .position(skater.getPosition())
                 .sweaterNumber(skater.getSweaterNumber())
-
                 .teamAbbreviation(team.getAbbrev())
                 .teamName(getDefaultName(team.getTeamName()))
                 .teamId(team.getId())
-
                 .opponentTeamAbbreviation(opponent.getAbbrev())
                 .opponentTeamName(getDefaultName(opponent.getTeamName()))
                 .opponentTeamId(opponent.getId())
-
                 .goals(skater.getGoals())
                 .assists(skater.getAssists())
                 .points(skater.getPoints())
@@ -52,7 +45,6 @@ public class PlayerGameLogMapper {
                 .shifts(skater.getShifts())
                 .giveaways(skater.getGiveaways())
                 .takeaways(skater.getTakeaways())
-
                 .build();
     }
 

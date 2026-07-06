@@ -3,10 +3,8 @@ package com.game_monitor.nhl_stats_service.mappers;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse.TeamBoxscore;
 import com.game_monitor.nhl_stats_service.models.GameSummaryDocument;
-
-import org.springframework.stereotype.Component;
-
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class GameSummaryMapper {
@@ -22,19 +20,15 @@ public class GameSummaryMapper {
 
         return GameSummaryDocument.builder()
                 .id(String.valueOf(boxscore.getId()))
-
                 .gameId(boxscore.getId())
                 .season(boxscore.getSeason())
                 .gameType(boxscore.getGameType())
-
                 .gameDate(boxscore.getGameDate())
                 .gameStartTimeUtc(boxscore.getStartTimeUtc())
                 .gameState(boxscore.getGameState())
                 .gameScheduleState(boxscore.getGameScheduleState())
-
                 .venueName(getDefaultName(boxscore.getVenue()))
                 .venueLocation(getDefaultName(boxscore.getVenueLocation()))
-
                 .homeTeamId(homeTeam.getId())
                 .homeTeamAbbreviation(homeTeam.getAbbrev())
                 .homeTeamName(getDefaultName(homeTeam.getTeamName()))
@@ -43,7 +37,6 @@ public class GameSummaryMapper {
                 .homeTeamDarkLogo(homeTeam.getDarkLogoUrl())
                 .homeScore(homeTeam.getScore())
                 .homeShotsOnGoal(homeTeam.getShotsOnGoal())
-
                 .awayTeamId(awayTeam.getId())
                 .awayTeamAbbreviation(awayTeam.getAbbrev())
                 .awayTeamName(getDefaultName(awayTeam.getTeamName()))
@@ -52,39 +45,29 @@ public class GameSummaryMapper {
                 .awayTeamDarkLogo(awayTeam.getDarkLogoUrl())
                 .awayScore(awayTeam.getScore())
                 .awayShotsOnGoal(awayTeam.getShotsOnGoal())
-
                 .winningTeamId(winningTeam.getId())
                 .winningTeamAbbreviation(winningTeam.getAbbrev())
                 .winningTeamName(getDefaultName(winningTeam.getTeamName()))
-
                 .losingTeamId(losingTeam.getId())
                 .losingTeamAbbreviation(losingTeam.getAbbrev())
                 .losingTeamName(getDefaultName(losingTeam.getTeamName()))
-
                 .totalGoals(homeTeam.getScore() + awayTeam.getScore())
                 .totalShotsOnGoal(homeTeam.getShotsOnGoal() + awayTeam.getShotsOnGoal())
                 .goalDifferential(Math.abs(homeTeam.getScore() - awayTeam.getScore()))
-
                 .finalPeriodType(finalPeriodType)
                 .wentToOvertime(isOvertime(finalPeriodType))
                 .wentToShootout(isShootout(finalPeriodType))
                 .completedInRegulation(isRegulation(finalPeriodType))
-
                 .broadcastNetworks(getBroadcastNetworks(boxscore))
-
                 .build();
     }
 
     private TeamBoxscore getWinningTeam(TeamBoxscore homeTeam, TeamBoxscore awayTeam) {
-        return homeTeam.getScore() > awayTeam.getScore()
-                ? homeTeam
-                : awayTeam;
+        return homeTeam.getScore() > awayTeam.getScore() ? homeTeam : awayTeam;
     }
 
     private TeamBoxscore getLosingTeam(TeamBoxscore homeTeam, TeamBoxscore awayTeam) {
-        return homeTeam.getScore() < awayTeam.getScore()
-                ? homeTeam
-                : awayTeam;
+        return homeTeam.getScore() < awayTeam.getScore() ? homeTeam : awayTeam;
     }
 
     private String getFinalPeriodType(GameBoxscoreResponse boxscore) {
@@ -112,8 +95,7 @@ public class GameSummaryMapper {
             return List.of();
         }
 
-        return boxscore.getTvBroadcasts()
-                .stream()
+        return boxscore.getTvBroadcasts().stream()
                 .map(GameBoxscoreResponse.TvBroadcast::getNetwork)
                 .toList();
     }

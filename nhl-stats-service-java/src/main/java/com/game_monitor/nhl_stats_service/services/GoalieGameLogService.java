@@ -1,15 +1,13 @@
 package com.game_monitor.nhl_stats_service.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.game_monitor.nhl_stats_service.mappers.GoalieGameLogMapper;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse.TeamBoxscore;
 import com.game_monitor.nhl_stats_service.models.GoalieGameLogDocument;
 import com.game_monitor.nhl_stats_service.repositories.GoalieGameLogRepository;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GoalieGameLogService {
@@ -18,8 +16,7 @@ public class GoalieGameLogService {
     private final GoalieGameLogMapper goalieGameLogMapper;
 
     public GoalieGameLogService(
-            GoalieGameLogRepository goalieGameLogRepository,
-            GoalieGameLogMapper goalieGameLogMapper) {
+            GoalieGameLogRepository goalieGameLogRepository, GoalieGameLogMapper goalieGameLogMapper) {
         this.goalieGameLogRepository = goalieGameLogRepository;
         this.goalieGameLogMapper = goalieGameLogMapper;
     }
@@ -30,22 +27,24 @@ public class GoalieGameLogService {
 
         List<GoalieGameLogDocument> documents = new ArrayList<>();
 
-        documents.addAll(mapTeamGoalies(
-                boxscore,
-                boxscore.getPlayerByGameStats().getHomeTeam().getGoalies(),
-                homeTeam,
-                awayTeam));
+        documents.addAll(
+                mapTeamGoalies(
+                        boxscore,
+                        boxscore.getPlayerByGameStats().getHomeTeam().getGoalies(),
+                        homeTeam,
+                        awayTeam));
 
-        documents.addAll(mapTeamGoalies(
-                boxscore,
-                boxscore.getPlayerByGameStats().getAwayTeam().getGoalies(),
-                awayTeam,
-                homeTeam));
+        documents.addAll(
+                mapTeamGoalies(
+                        boxscore,
+                        boxscore.getPlayerByGameStats().getAwayTeam().getGoalies(),
+                        awayTeam,
+                        homeTeam));
 
         goalieGameLogRepository.saveAll(documents);
 
-        System.out.println("Saved " + documents.size()
-                + " goalie game logs for game " + boxscore.getId());
+        System.out.println(
+                "Saved " + documents.size() + " goalie game logs for game " + boxscore.getId());
     }
 
     private List<GoalieGameLogDocument> mapTeamGoalies(
@@ -58,11 +57,7 @@ public class GoalieGameLogService {
         }
 
         return goalies.stream()
-                .map(goalie -> goalieGameLogMapper.mapGoalieToDocument(
-                        boxscore,
-                        goalie,
-                        team,
-                        opponent))
+                .map(goalie -> goalieGameLogMapper.mapGoalieToDocument(boxscore, goalie, team, opponent))
                 .toList();
     }
 }

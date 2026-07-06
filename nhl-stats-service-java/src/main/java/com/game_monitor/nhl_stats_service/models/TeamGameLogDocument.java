@@ -1,12 +1,11 @@
 package com.game_monitor.nhl_stats_service.models;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
-
-import java.time.Instant;
-import java.time.LocalDate;
 
 @Data
 @Builder

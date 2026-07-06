@@ -1,15 +1,13 @@
 package com.game_monitor.nhl_stats_service.services;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.game_monitor.nhl_stats_service.mappers.PlayerGameLogMapper;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse.TeamBoxscore;
 import com.game_monitor.nhl_stats_service.models.PlayerGameLogDocument;
 import com.game_monitor.nhl_stats_service.repositories.PlayerGameLogRepository;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PlayerGameLogService {
@@ -17,8 +15,8 @@ public class PlayerGameLogService {
     private final PlayerGameLogRepository playerGameLogRepository;
     private final PlayerGameLogMapper playerGameLogMapper;
 
-    public PlayerGameLogService(PlayerGameLogRepository playerGameLogRepository,
-            PlayerGameLogMapper playerGameLogMapper) {
+    public PlayerGameLogService(
+            PlayerGameLogRepository playerGameLogRepository, PlayerGameLogMapper playerGameLogMapper) {
         this.playerGameLogRepository = playerGameLogRepository;
         this.playerGameLogMapper = playerGameLogMapper;
     }
@@ -29,22 +27,27 @@ public class PlayerGameLogService {
 
         List<PlayerGameLogDocument> playerGameLogDocuments = new ArrayList<>();
 
-        playerGameLogDocuments.addAll(mapTeamSkaters(
-                boxscore,
-                boxscore.getPlayerByGameStats().getHomeTeam(),
-                homeTeamBoxscore,
-                awayTeamBoxscore));
+        playerGameLogDocuments.addAll(
+                mapTeamSkaters(
+                        boxscore,
+                        boxscore.getPlayerByGameStats().getHomeTeam(),
+                        homeTeamBoxscore,
+                        awayTeamBoxscore));
 
-        playerGameLogDocuments.addAll(mapTeamSkaters(
-                boxscore,
-                boxscore.getPlayerByGameStats().getAwayTeam(),
-                awayTeamBoxscore,
-                homeTeamBoxscore));
+        playerGameLogDocuments.addAll(
+                mapTeamSkaters(
+                        boxscore,
+                        boxscore.getPlayerByGameStats().getAwayTeam(),
+                        awayTeamBoxscore,
+                        homeTeamBoxscore));
 
         playerGameLogRepository.saveAll(playerGameLogDocuments);
 
-        System.out.println("Saved " + playerGameLogDocuments.size()
-                + " player game logs for game " + boxscore.getId());
+        System.out.println(
+                "Saved "
+                        + playerGameLogDocuments.size()
+                        + " player game logs for game "
+                        + boxscore.getId());
     }
 
     private List<PlayerGameLogDocument> mapTeamSkaters(
@@ -54,23 +57,17 @@ public class PlayerGameLogService {
             TeamBoxscore opponent) {
         List<PlayerGameLogDocument> documents = new ArrayList<>();
 
-        documents.addAll(teamPlayerStats.getForwards()
-                .stream()
-                .map(skater -> playerGameLogMapper.mapSkaterToDocument(
-                        boxscore,
-                        skater,
-                        team,
-                        opponent))
-                .toList());
+        documents.addAll(
+                teamPlayerStats.getForwards().stream()
+                        .map(
+                                skater -> playerGameLogMapper.mapSkaterToDocument(boxscore, skater, team, opponent))
+                        .toList());
 
-        documents.addAll(teamPlayerStats.getDefense()
-                .stream()
-                .map(skater -> playerGameLogMapper.mapSkaterToDocument(
-                        boxscore,
-                        skater,
-                        team,
-                        opponent))
-                .toList());
+        documents.addAll(
+                teamPlayerStats.getDefense().stream()
+                        .map(
+                                skater -> playerGameLogMapper.mapSkaterToDocument(boxscore, skater, team, opponent))
+                        .toList());
 
         return documents;
     }

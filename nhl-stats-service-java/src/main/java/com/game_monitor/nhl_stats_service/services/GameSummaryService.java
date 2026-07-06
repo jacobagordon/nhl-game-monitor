@@ -1,11 +1,10 @@
 package com.game_monitor.nhl_stats_service.services;
 
-import org.springframework.stereotype.Service;
-
 import com.game_monitor.nhl_stats_service.mappers.GameSummaryMapper;
 import com.game_monitor.nhl_stats_service.models.GameBoxscoreResponse;
 import com.game_monitor.nhl_stats_service.models.GameSummaryDocument;
 import com.game_monitor.nhl_stats_service.repositories.GameSummaryRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class GameSummaryService {
@@ -13,8 +12,7 @@ public class GameSummaryService {
     private final GameSummaryMapper gameSummaryMapper;
 
     public GameSummaryService(
-            GameSummaryRepository gameSummaryRepository,
-            GameSummaryMapper gameSummaryMapper) {
+            GameSummaryRepository gameSummaryRepository, GameSummaryMapper gameSummaryMapper) {
         this.gameSummaryRepository = gameSummaryRepository;
         this.gameSummaryMapper = gameSummaryMapper;
     }
