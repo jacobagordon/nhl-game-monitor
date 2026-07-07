@@ -32,9 +32,24 @@ namespace nhl_game_monitor.src.Services
 
         public async Task CheckForCompletedGamesAsync(DateOnly scheduleDate, CancellationToken cancellationToken)
         {
-            await RefreshScheduleAsync(scheduleDate, cancellationToken);
-            ActivateScheduledGames();
+            Exception? refreshException = null;
+
+            try
+            {
+                await RefreshScheduleAsync(scheduleDate, cancellationToken);
+                ActivateScheduledGames();
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException)
+            {
+                refreshException = ex;
+            }
+
             await PollActiveGamesAsync(cancellationToken);
+
+            if (refreshException != null)
+            {
+                throw refreshException;
+            }
         }
 
         private async Task RefreshScheduleAsync(DateOnly scheduleDate, CancellationToken cancellationToken)
@@ -114,7 +129,14 @@ namespace nhl_game_monitor.src.Services
 
             foreach (var dateGroup in gamesToPoll.GroupBy(g => g.ScheduleDate))
             {
-                await PollActiveGamesForDateAsync(dateGroup.Key, dateGroup.ToList(), cancellationToken);
+                try
+                {
+                    await PollActiveGamesForDateAsync(dateGroup.Key, dateGroup.ToList(), cancellationToken);
+                }
+                catch (Exception ex) when (ex is not OperationCanceledException)
+                {
+                    _logger.LogError(ex, "Failed to poll active games for {Date}", dateGroup.Key);
+                }
             }
         }
 

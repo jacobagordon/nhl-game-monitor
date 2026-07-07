@@ -12,7 +12,15 @@ public class Worker(ILogger<Worker> logger, NHLGameService nhlGameService) : Bac
             {
                 logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             }
-            await nhlGameService.CheckForCompletedGamesAsync(stoppingToken);
+
+            try
+            {
+                await nhlGameService.CheckForCompletedGamesAsync(stoppingToken);
+            }
+            catch (Exception ex) when (ex is not OperationCanceledException)
+            {
+                logger.LogError(ex, "Worker failed to check for completed games");
+            }
 
             await Task.Delay(20000, stoppingToken);
         }
