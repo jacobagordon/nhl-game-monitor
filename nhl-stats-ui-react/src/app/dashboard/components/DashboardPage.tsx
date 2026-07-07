@@ -6,8 +6,10 @@ import SportsHockeyIcon from "@mui/icons-material/SportsHockey";
 import type { DashboardSummaryResponse } from "../interfaces/DashboardSummaryResponse";
 import type { DashboardStat } from "../interfaces/DashboardStat";
 import type { RecentGame } from "../interfaces/RecentGame";
+import type { TopPerformer } from "../interfaces/TopPerformer";
 import { RecentGamesCard } from "./RecentGamesCard";
 import { StatSummaryCard } from "./StatSummaryCard";
+import { TopPerformersCard } from "./TopPerformersCard";
 import {
     StyledDashboardGrid,
     StyledDashboardHeader,
@@ -26,6 +28,10 @@ interface DashboardPageProps {
     isRecentGamesLoading: boolean;
     recentGamesError: string | null;
     fetchRecentGames: () => void;
+    topPerformers: TopPerformer[];
+    isTopPerformersLoading: boolean;
+    topPerformersError: string | null;
+    fetchTopPerformers: () => void;
 }
 
 export const DashboardPage = ({
@@ -37,11 +43,16 @@ export const DashboardPage = ({
     isRecentGamesLoading,
     recentGamesError,
     fetchRecentGames,
+    topPerformers,
+    isTopPerformersLoading,
+    topPerformersError,
+    fetchTopPerformers,
 }: DashboardPageProps) => {
     useEffect(() => {
         fetchDashboardSummary();
         fetchRecentGames();
-    }, [fetchDashboardSummary, fetchRecentGames]);
+        fetchTopPerformers();
+    }, [fetchDashboardSummary, fetchRecentGames, fetchTopPerformers]);
 
     const stats: DashboardStat[] = [
         {
@@ -91,6 +102,12 @@ export const DashboardPage = ({
                     games={recentGames}
                     isLoading={isRecentGamesLoading}
                     error={recentGamesError}
+                />
+
+                <TopPerformersCard
+                    performers={topPerformers}
+                    isLoading={isTopPerformersLoading}
+                    error={topPerformersError}
                 />
             </StyledDashboardGrid>
         </StyledDashboardPage>

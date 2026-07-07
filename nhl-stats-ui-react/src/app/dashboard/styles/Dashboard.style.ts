@@ -311,6 +311,75 @@ export const StyledRecentGamesEmpty = styled("div")`
     font-size: 13px;
 `;
 
+export const StyledPerformersList = styled("div")`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+export const StyledPerformerRow = styled("div")`
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    border-radius: 12px;
+    border: 1px solid rgba(71, 104, 138, 0.2);
+    background: rgba(255, 255, 255, 0.015);
+
+    padding: 10px 14px;
+`;
+
+export const StyledPerformerLogo = styled("img")`
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    flex-shrink: 0;
+`;
+
+export const StyledPerformerInfo = styled("div")`
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+`;
+
+export const StyledPerformerName = styled("div")`
+    color: #dce5f5;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+export const StyledPerformerMeta = styled("div")`
+    color: #697386;
+    font-size: 11px;
+`;
+
+export const StyledPerformerStat = styled("div")`
+    flex-shrink: 0;
+    text-align: right;
+`;
+
+export const StyledPerformerStatValue = styled("div")`
+    color: #f8fbff;
+    font-size: 16px;
+    font-weight: 900;
+`;
+
+export const StyledPerformerStatLabel = styled("div")`
+    color: #697386;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+`;
+
 export const StyledDataStatusLayout = styled("div")`
     display: grid;
     grid-template-columns: 160px 1fr;

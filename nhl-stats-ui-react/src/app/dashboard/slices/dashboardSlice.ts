@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { DashboardSummaryResponse } from "../interfaces/DashboardSummaryResponse";
 import type { RecentGame } from "../interfaces/RecentGame";
+import type { TopPerformer } from "../interfaces/TopPerformer";
 
 interface DashboardState {
     summary: DashboardSummaryResponse | null;
@@ -9,6 +10,9 @@ interface DashboardState {
     recentGames: RecentGame[];
     isRecentGamesLoading: boolean;
     recentGamesError: string | null;
+    topPerformers: TopPerformer[];
+    isTopPerformersLoading: boolean;
+    topPerformersError: string | null;
 }
 
 const initialState: DashboardState = {
@@ -18,6 +22,9 @@ const initialState: DashboardState = {
     recentGames: [],
     isRecentGamesLoading: false,
     recentGamesError: null,
+    topPerformers: [],
+    isTopPerformersLoading: false,
+    topPerformersError: null,
 };
 
 export const fetchDashboardSummary = createAsyncThunk<
@@ -59,6 +66,26 @@ export const fetchRecentGames = createAsyncThunk<RecentGame[], void, { rejectVal
     }
 );
 
+export const fetchTopPerformers = createAsyncThunk<
+    TopPerformer[],
+    void,
+    { rejectValue: string }
+>("dashboard/fetchTopPerformers", async (_, { rejectWithValue }) => {
+    try {
+        const response = await fetch("/api/dashboard/top-performers");
+
+        if (!response.ok) {
+            return rejectWithValue(
+                `Top performers request failed with status ${response.status}`
+            );
+        }
+
+        return (await response.json()) as TopPerformer[];
+    } catch (error) {
+        return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
+    }
+});
+
 const dashboardSlice = createSlice({
     name: "dashboard",
     initialState,
@@ -88,6 +115,18 @@ const dashboardSlice = createSlice({
             .addCase(fetchRecentGames.rejected, (state, action) => {
                 state.isRecentGamesLoading = false;
                 state.recentGamesError = action.payload ?? "Failed to fetch recent games";
+            })
+            .addCase(fetchTopPerformers.pending, state => {
+                state.isTopPerformersLoading = true;
+                state.topPerformersError = null;
+            })
+            .addCase(fetchTopPerformers.fulfilled, (state, action) => {
+                state.isTopPerformersLoading = false;
+                state.topPerformers = action.payload;
+            })
+            .addCase(fetchTopPerformers.rejected, (state, action) => {
+                state.isTopPerformersLoading = false;
+                state.topPerformersError = action.payload ?? "Failed to fetch top performers";
             });
     },
 });

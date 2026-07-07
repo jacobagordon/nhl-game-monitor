@@ -8,8 +8,15 @@ import {
     selectRecentGames,
     selectRecentGamesError,
     selectRecentGamesIsLoading,
+    selectTopPerformers,
+    selectTopPerformersError,
+    selectTopPerformersIsLoading,
 } from "../selectors/dashboardSelectors";
-import { fetchDashboardSummary, fetchRecentGames } from "../slices/dashboardSlice";
+import {
+    fetchDashboardSummary,
+    fetchRecentGames,
+    fetchTopPerformers,
+} from "../slices/dashboardSlice";
 
 const mapStateToProps = (state: RootState) => ({
     summary: selectDashboardSummary(state),
@@ -18,11 +25,15 @@ const mapStateToProps = (state: RootState) => ({
     recentGames: selectRecentGames(state),
     isRecentGamesLoading: selectRecentGamesIsLoading(state),
     recentGamesError: selectRecentGamesError(state),
+    topPerformers: selectTopPerformers(state),
+    isTopPerformersLoading: selectTopPerformersIsLoading(state),
+    topPerformersError: selectTopPerformersError(state),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     fetchDashboardSummary: () => dispatch(fetchDashboardSummary()),
     fetchRecentGames: () => dispatch(fetchRecentGames()),
+    fetchTopPerformers: () => dispatch(fetchTopPerformers()),
 });
 
 export const DashboardContainer = connect(mapStateToProps, mapDispatchToProps)(DashboardPage);

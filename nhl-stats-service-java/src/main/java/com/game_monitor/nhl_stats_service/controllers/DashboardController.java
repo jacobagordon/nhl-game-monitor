@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.game_monitor.nhl_stats_service.models.DashboardSummaryResponse;
 import com.game_monitor.nhl_stats_service.models.RecentGameResponse;
+import com.game_monitor.nhl_stats_service.models.TopPerformerResponse;
 import com.game_monitor.nhl_stats_service.services.DashboardService;
 
 @RestController
@@ -25,5 +26,10 @@ public class DashboardController {
     @GetMapping("/api/dashboard/recent-games")
     public List<RecentGameResponse> getRecentGames() {
         return dashboardService.getRecentGames();
+    }
+
+    @GetMapping("/api/dashboard/top-performers")
+    public List<TopPerformerResponse> getTopPerformers() {
+        return dashboardService.getTopPerformers();
     }
 }

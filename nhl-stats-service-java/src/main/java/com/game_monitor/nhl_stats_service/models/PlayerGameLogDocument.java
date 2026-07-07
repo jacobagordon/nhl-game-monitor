@@ -5,7 +5,10 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
 @Builder
@@ -16,6 +19,8 @@ public class PlayerGameLogDocument {
 
     private long gameId;
     private long season;
+
+    @Field(type = FieldType.Date, format = DateFormat.date_optional_time)
     private LocalDate gameDate;
     private Instant gameStartTimeUtc;
 
