@@ -53,25 +53,26 @@ public class DashboardService {
                 .gameDate(game.getGameDate())
                 .gameStartTimeUtc(game.getGameStartTimeUtc())
                 .venueName(game.getVenueName())
+                .venueLocation(game.getVenueLocation())
+                .finalPeriodType(game.getFinalPeriodType())
                 .awayTeamAbbreviation(game.getAwayTeamAbbreviation())
+                .awayTeamFullName(buildFullTeamName(game.getAwayTeamPlaceName(), game.getAwayTeamName()))
                 .awayScore(game.getAwayScore())
+                .awayShotsOnGoal(game.getAwayShotsOnGoal())
                 .awayTeamLogoUrl(game.getAwayTeamLogo())
                 .homeTeamAbbreviation(game.getHomeTeamAbbreviation())
+                .homeTeamFullName(buildFullTeamName(game.getHomeTeamPlaceName(), game.getHomeTeamName()))
                 .homeScore(game.getHomeScore())
+                .homeShotsOnGoal(game.getHomeShotsOnGoal())
                 .homeTeamLogoUrl(game.getHomeTeamLogo())
-                .status(buildStatusLabel(game))
                 .build();
     }
 
-    private String buildStatusLabel(GameSummaryDocument game) {
-        if (game.isWentToShootout()) {
-            return "FINAL/SO";
+    private String buildFullTeamName(String placeName, String teamName) {
+        if (placeName == null || placeName.isBlank()) {
+            return teamName;
         }
 
-        if (game.isWentToOvertime()) {
-            return "FINAL/OT";
-        }
-
-        return "FINAL";
+        return placeName + " " + teamName;
     }
 }

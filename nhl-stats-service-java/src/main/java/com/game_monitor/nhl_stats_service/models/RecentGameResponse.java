@@ -12,14 +12,18 @@ public class RecentGameResponse {
     private LocalDate gameDate;
     private Instant gameStartTimeUtc;
     private String venueName;
+    private String venueLocation;
+    private String finalPeriodType;
 
     private String awayTeamAbbreviation;
+    private String awayTeamFullName;
     private int awayScore;
+    private int awayShotsOnGoal;
     private String awayTeamLogoUrl;
 
     private String homeTeamAbbreviation;
+    private String homeTeamFullName;
     private int homeScore;
+    private int homeShotsOnGoal;
     private String homeTeamLogoUrl;
-
-    private String status;
 }

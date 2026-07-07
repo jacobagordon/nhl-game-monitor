@@ -191,11 +191,16 @@ export const StyledRecentGameBackdrop = styled("div")`
     pointer-events: none;
 `;
 
-export const StyledRecentGameBackdropLogo = styled("img")<{ $side: "left" | "right" }>`
+export const StyledRecentGameBackdropLogo = styled("img")<{
+    $side: "left" | "right";
+    $isWinner: boolean;
+}>`
     width: 130px;
     height: 130px;
     object-fit: contain;
-    opacity: 0.07;
+    opacity: ${({ $isWinner }) => ($isWinner ? 0.38 : 0.07)};
+    filter: ${({ $isWinner }) =>
+        $isWinner ? "drop-shadow(0 0 30px rgba(22, 139, 255, 0.65))" : "none"};
     transform: ${({ $side }) => ($side === "left" ? "translateX(-25%)" : "translateX(25%)")};
 `;
 
@@ -230,47 +235,68 @@ export const StyledRecentGameMatchup = styled("div")`
     gap: 16px;
 `;
 
-export const StyledRecentGameTeam = styled("div")<{ $align: "left" | "right" }>`
+export const StyledRecentGameTeam = styled("div")<{ $align: "left" | "right"; $isWinner?: boolean }>`
     display: flex;
     align-items: center;
     justify-content: ${({ $align }) => ($align === "right" ? "flex-end" : "flex-start")};
     gap: 10px;
 
-    color: #dce5f5;
+    color: ${({ $isWinner }) => ($isWinner ? "#f8fbff" : "#8a93a3")};
     font-size: 14px;
-    font-weight: 800;
+    font-weight: ${({ $isWinner }) => ($isWinner ? 850 : 700)};
     letter-spacing: 0.04em;
 `;
 
-export const StyledTeamLogo = styled("img")`
+export const StyledTeamLogo = styled("img")<{ $isWinner: boolean }>`
     width: 36px;
     height: 36px;
     object-fit: contain;
     flex-shrink: 0;
+    opacity: ${({ $isWinner }) => ($isWinner ? 1 : 0.55)};
 `;
 
 export const StyledRecentGameScore = styled("div")`
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #f8fbff;
     font-size: 21px;
     font-weight: 900;
 `;
 
-export const StyledRecentGameStatus = styled("span")`
-    flex-shrink: 0;
+export const StyledRecentGameScoreValue = styled("span")<{ $isWinner?: boolean }>`
+    color: ${({ $isWinner }) => ($isWinner ? "#168bff" : "#f8fbff")};
+`;
 
-    padding: 3px 9px;
-    border-radius: 999px;
-    border: 1px solid rgba(22, 139, 255, 0.35);
-    background: rgba(22, 139, 255, 0.08);
-
-    color: #4da6ff;
-    font-size: 11px;
-    font-weight: 850;
+export const StyledRecentGamePeriodType = styled("span")`
+    color: #7f8898;
+    font-size: 12px;
+    font-weight: 700;
     letter-spacing: 0.04em;
-    white-space: nowrap;
+    text-transform: uppercase;
+`;
+
+export const StyledRecentGameStatRow = styled("div")`
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+
+    color: #697386;
+    font-size: 12px;
+    font-weight: 700;
+`;
+
+export const StyledRecentGameStatValue = styled("span")<{ $align: "left" | "right" }>`
+    text-align: ${({ $align }) => $align};
+`;
+
+export const StyledRecentGameStatLabel = styled("span")`
+    color: #4d5566;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
 `;
 
 export const StyledRecentGameVenue = styled("div")`
