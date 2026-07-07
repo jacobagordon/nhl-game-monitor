@@ -14,7 +14,7 @@ interface StatSummaryCardProps {
 export const StatSummaryCard = ({ stat }: StatSummaryCardProps) => {
     return (
         <StyledStatSummaryCard>
-            <StyledStatSummaryIcon />
+            <StyledStatSummaryIcon>{stat.icon}</StyledStatSummaryIcon>
 
             <div>
                 <StyledStatSummaryValue>{stat.value}</StyledStatSummaryValue>

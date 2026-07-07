@@ -1,11 +1,31 @@
 import { useEffect } from "react";
+import GroupsIcon from "@mui/icons-material/Groups";
+import PersonIcon from "@mui/icons-material/Person";
+import ShieldIcon from "@mui/icons-material/Shield";
+import SportsHockeyIcon from "@mui/icons-material/SportsHockey";
 import type { DashboardSummaryResponse } from "../interfaces/DashboardSummaryResponse";
+import type { DashboardStat } from "../interfaces/DashboardStat";
+import type { RecentGame } from "../interfaces/RecentGame";
+import { RecentGamesCard } from "./RecentGamesCard";
+import { StatSummaryCard } from "./StatSummaryCard";
+import {
+    StyledDashboardGrid,
+    StyledDashboardHeader,
+    StyledDashboardPage,
+    StyledDashboardSubtitle,
+    StyledDashboardTitle,
+    StyledSummaryGrid,
+} from "../styles/Dashboard.style";
 
 interface DashboardPageProps {
     summary: DashboardSummaryResponse | null;
     isLoading: boolean;
     error: string | null;
     fetchDashboardSummary: () => void;
+    recentGames: RecentGame[];
+    isRecentGamesLoading: boolean;
+    recentGamesError: string | null;
+    fetchRecentGames: () => void;
 }
 
 export const DashboardPage = ({
@@ -13,44 +33,74 @@ export const DashboardPage = ({
     isLoading,
     error,
     fetchDashboardSummary,
+    recentGames,
+    isRecentGamesLoading,
+    recentGamesError,
+    fetchRecentGames,
 }: DashboardPageProps) => {
     useEffect(() => {
         fetchDashboardSummary();
-    }, [fetchDashboardSummary]);
+        fetchRecentGames();
+    }, [fetchDashboardSummary, fetchRecentGames]);
 
-    if (isLoading) {
-        return <main>Loading dashboard...</main>;
-    }
-
-    if (error) {
-        return <main>{error}</main>;
-    }
+    const stats: DashboardStat[] = [
+        {
+            label: "Games Indexed",
+            value: formatCount(summary?.totalGamesIndexed),
+            subtitle: "Boxscores in OpenSearch",
+            icon: <SportsHockeyIcon />,
+        },
+        {
+            label: "Team Logs",
+            value: formatCount(summary?.totalTeamGameLogsIndexed),
+            subtitle: "Team game logs indexed",
+            icon: <GroupsIcon />,
+        },
+        {
+            label: "Player Logs",
+            value: formatCount(summary?.totalPlayerGameLogsIndexed),
+            subtitle: "Skater game logs indexed",
+            icon: <PersonIcon />,
+        },
+        {
+            label: "Goalie Logs",
+            value: formatCount(summary?.totalGoalieGameLogsIndexed),
+            subtitle: "Goalie game logs indexed",
+            icon: <ShieldIcon />,
+        },
+    ];
 
     return (
-        <main>
-            <h1>Dashboard</h1>
+        <StyledDashboardPage>
+            <StyledDashboardHeader>
+                <StyledDashboardTitle>Dashboard</StyledDashboardTitle>
 
-            <section>
-                <article>
-                    <h2>Games Indexed</h2>
-                    <p>{summary?.totalGamesIndexed ?? 0}</p>
-                </article>
+                <StyledDashboardSubtitle>
+                    {error ?? (isLoading ? "Loading dashboard..." : "NHL data pipeline overview")}
+                </StyledDashboardSubtitle>
+            </StyledDashboardHeader>
 
-                <article>
-                    <h2>Team Logs</h2>
-                    <p>{summary?.totalTeamGameLogsIndexed ?? 0}</p>
-                </article>
+            <StyledSummaryGrid>
+                {stats.map(stat => (
+                    <StatSummaryCard key={stat.label} stat={stat} />
+                ))}
+            </StyledSummaryGrid>
 
-                <article>
-                    <h2>Player Logs</h2>
-                    <p>{summary?.totalPlayerGameLogsIndexed ?? 0}</p>
-                </article>
-
-                <article>
-                    <h2>Goalie Logs</h2>
-                    <p>{summary?.totalGoalieGameLogsIndexed ?? 0}</p>
-                </article>
-            </section>
-        </main>
+            <StyledDashboardGrid>
+                <RecentGamesCard
+                    games={recentGames}
+                    isLoading={isRecentGamesLoading}
+                    error={recentGamesError}
+                />
+            </StyledDashboardGrid>
+        </StyledDashboardPage>
     );
+};
+
+const formatCount = (value: number | undefined): string => {
+    if (value === undefined) {
+        return "—";
+    }
+
+    return value.toLocaleString();
 };

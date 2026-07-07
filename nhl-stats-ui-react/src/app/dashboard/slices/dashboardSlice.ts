@@ -1,16 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { DashboardSummaryResponse } from "../interfaces/DashboardSummaryResponse";
+import type { RecentGame } from "../interfaces/RecentGame";
 
 interface DashboardState {
     summary: DashboardSummaryResponse | null;
     isLoading: boolean;
     error: string | null;
+    recentGames: RecentGame[];
+    isRecentGamesLoading: boolean;
+    recentGamesError: string | null;
 }
 
 const initialState: DashboardState = {
     summary: null,
     isLoading: false,
     error: null,
+    recentGames: [],
+    isRecentGamesLoading: false,
+    recentGamesError: null,
 };
 
 export const fetchDashboardSummary = createAsyncThunk<
@@ -33,6 +40,25 @@ export const fetchDashboardSummary = createAsyncThunk<
     }
 });
 
+export const fetchRecentGames = createAsyncThunk<RecentGame[], void, { rejectValue: string }>(
+    "dashboard/fetchRecentGames",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await fetch("/api/dashboard/recent-games");
+
+            if (!response.ok) {
+                return rejectWithValue(
+                    `Recent games request failed with status ${response.status}`
+                );
+            }
+
+            return (await response.json()) as RecentGame[];
+        } catch (error) {
+            return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
+        }
+    }
+);
+
 const dashboardSlice = createSlice({
     name: "dashboard",
     initialState,
@@ -50,6 +76,18 @@ const dashboardSlice = createSlice({
             .addCase(fetchDashboardSummary.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload ?? "Failed to fetch dashboard summary";
+            })
+            .addCase(fetchRecentGames.pending, state => {
+                state.isRecentGamesLoading = true;
+                state.recentGamesError = null;
+            })
+            .addCase(fetchRecentGames.fulfilled, (state, action) => {
+                state.isRecentGamesLoading = false;
+                state.recentGames = action.payload;
+            })
+            .addCase(fetchRecentGames.rejected, (state, action) => {
+                state.isRecentGamesLoading = false;
+                state.recentGamesError = action.payload ?? "Failed to fetch recent games";
             });
     },
 });

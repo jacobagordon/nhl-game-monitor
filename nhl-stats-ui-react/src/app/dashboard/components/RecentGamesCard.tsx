@@ -1,62 +1,126 @@
 import { DashboardCard } from "./DashboardCard";
 import type { RecentGame } from "../interfaces/RecentGame";
 import {
+    StyledRecentGameBackdrop,
+    StyledRecentGameBackdropLogo,
+    StyledRecentGameContent,
     StyledRecentGameDate,
     StyledRecentGameMatchup,
+    StyledRecentGameMeta,
     StyledRecentGameRow,
-    StyledRecentGamesList,
+    StyledRecentGameScore,
     StyledRecentGameStatus,
+    StyledRecentGameTeam,
+    StyledRecentGameVenue,
+    StyledRecentGamesEmpty,
+    StyledRecentGamesList,
+    StyledTeamLogo,
 } from "../styles/Dashboard.style";
 
-const recentGames: RecentGame[] = [
-    {
-        id: 1,
-        gameDate: "May 14, 2025",
-        awayTeamAbbreviation: "COL",
-        awayScore: 5,
-        homeTeamAbbreviation: "ARI",
-        homeScore: 2,
-        status: "FINAL",
-    },
-    {
-        id: 2,
-        gameDate: "May 14, 2025",
-        awayTeamAbbreviation: "DAL",
-        awayScore: 3,
-        homeTeamAbbreviation: "NSH",
-        homeScore: 1,
-        status: "FINAL",
-    },
-    {
-        id: 3,
-        gameDate: "May 13, 2025",
-        awayTeamAbbreviation: "TOR",
-        awayScore: 4,
-        homeTeamAbbreviation: "OTT",
-        homeScore: 2,
-        status: "FINAL",
-    },
-];
+interface RecentGamesCardProps {
+    games: RecentGame[];
+    isLoading: boolean;
+    error: string | null;
+}
 
-export const RecentGamesCard = () => {
+export const RecentGamesCard = ({ games, isLoading, error }: RecentGamesCardProps) => {
     return (
         <DashboardCard title="Recent Games">
-            <StyledRecentGamesList>
-                {recentGames.map(game => (
-                    <StyledRecentGameRow key={game.id}>
-                        <StyledRecentGameDate>{game.gameDate}</StyledRecentGameDate>
+            {error && <StyledRecentGamesEmpty>{error}</StyledRecentGamesEmpty>}
 
-                        <StyledRecentGameMatchup>
-                            <span>{game.awayTeamAbbreviation}</span>
-                            <strong>{game.awayScore}</strong>
-                            <span>{game.homeScore}</span>
-                            <span>{game.homeTeamAbbreviation}</span>
-                        </StyledRecentGameMatchup>
+            {!error && isLoading && (
+                <StyledRecentGamesEmpty>Loading recent games...</StyledRecentGamesEmpty>
+            )}
 
-                        <StyledRecentGameStatus>{game.status}</StyledRecentGameStatus>
-                    </StyledRecentGameRow>
-                ))}
-            </StyledRecentGamesList>
+            {!error && !isLoading && games.length === 0 && (
+                <StyledRecentGamesEmpty>No recent games</StyledRecentGamesEmpty>
+            )}
+
+            {!error && !isLoading && games.length > 0 && (
+                <StyledRecentGamesList>
+                    {games.map(game => (
+                        <StyledRecentGameRow key={game.id}>
+                            <StyledRecentGameBackdrop>
+                                {game.awayTeamLogoUrl && (
+                                    <StyledRecentGameBackdropLogo
+                                        $side="left"
+                                        src={game.awayTeamLogoUrl}
+                                        alt=""
+                                    />
+                                )}
+
+                                {game.homeTeamLogoUrl && (
+                                    <StyledRecentGameBackdropLogo
+                                        $side="right"
+                                        src={game.homeTeamLogoUrl}
+                                        alt=""
+                                    />
+                                )}
+                            </StyledRecentGameBackdrop>
+
+                            <StyledRecentGameContent>
+                                <StyledRecentGameMeta>
+                                    <StyledRecentGameDate>
+                                        {formatGameDate(game.gameDate)}
+                                    </StyledRecentGameDate>
+
+                                    <StyledRecentGameStatus>{game.status}</StyledRecentGameStatus>
+                                </StyledRecentGameMeta>
+
+                                <StyledRecentGameMatchup>
+                                    <StyledRecentGameTeam $align="right">
+                                        <span>{game.awayTeamAbbreviation}</span>
+
+                                        {game.awayTeamLogoUrl && (
+                                            <StyledTeamLogo
+                                                src={game.awayTeamLogoUrl}
+                                                alt={game.awayTeamAbbreviation}
+                                            />
+                                        )}
+                                    </StyledRecentGameTeam>
+
+                                    <StyledRecentGameScore>
+                                        <span>{game.awayScore}</span>
+                                        <span>-</span>
+                                        <span>{game.homeScore}</span>
+                                    </StyledRecentGameScore>
+
+                                    <StyledRecentGameTeam $align="left">
+                                        {game.homeTeamLogoUrl && (
+                                            <StyledTeamLogo
+                                                src={game.homeTeamLogoUrl}
+                                                alt={game.homeTeamAbbreviation}
+                                            />
+                                        )}
+
+                                        <span>{game.homeTeamAbbreviation}</span>
+                                    </StyledRecentGameTeam>
+                                </StyledRecentGameMatchup>
+
+                                <StyledRecentGameVenue>
+                                    {formatGameTime(game.gameStartTimeUtc)}
+                                    {game.venueName ? ` · ${game.venueName}` : ""}
+                                </StyledRecentGameVenue>
+                            </StyledRecentGameContent>
+                        </StyledRecentGameRow>
+                    ))}
+                </StyledRecentGamesList>
+            )}
         </DashboardCard>
     );
 };
+
+const formatGameDate = (gameDate: string): string => {
+    const [year, month, day] = gameDate.split("-").map(Number);
+
+    return new Date(year, month - 1, day).toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+    });
+};
+
+const formatGameTime = (gameStartTimeUtc: string): string =>
+    new Date(gameStartTimeUtc).toLocaleTimeString(undefined, {
+        hour: "numeric",
+        minute: "2-digit",
+    });

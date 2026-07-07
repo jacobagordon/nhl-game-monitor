@@ -6,7 +6,10 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @Data
 @Builder
@@ -20,6 +23,7 @@ public class GameSummaryDocument {
     private long season;
     private int gameType;
 
+    @Field(type = FieldType.Date, format = DateFormat.date_optional_time)
     private LocalDate gameDate;
     private Instant gameStartTimeUtc;
     private String gameState;

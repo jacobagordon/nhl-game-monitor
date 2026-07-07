@@ -12,11 +12,30 @@ const BaseCardStyles = `
 `;
 
 export const StyledDashboardPage = styled("main")`
-    padding: 24px;
+    min-height: calc(100vh - 72px);
+    padding: 32px;
 
     @media (max-width: 720px) {
         padding: 16px;
     }
+`;
+
+export const StyledDashboardHeader = styled("section")`
+    margin-bottom: 24px;
+`;
+
+export const StyledDashboardTitle = styled("h1")`
+    margin: 0;
+    color: #f8fbff;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+`;
+
+export const StyledDashboardSubtitle = styled("p")`
+    margin: 8px 0 0;
+    color: #8f9baa;
+    font-size: 14px;
 `;
 
 export const StyledSummaryGrid = styled("section")`
@@ -45,12 +64,24 @@ export const StyledStatSummaryCard = styled("div")`
 `;
 
 export const StyledStatSummaryIcon = styled("div")`
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
     width: 42px;
     height: 42px;
     border-radius: 14px;
     border: 1px solid rgba(22, 139, 255, 0.6);
     background: radial-gradient(circle, rgba(22, 139, 255, 0.22), transparent 60%);
     box-shadow: 0 0 24px rgba(22, 139, 255, 0.18);
+
+    color: #4da6ff;
+    font-size: 22px;
+
+    svg {
+        width: 22px;
+        height: 22px;
+    }
 `;
 
 export const StyledStatSummaryValue = styled("div")`
@@ -135,39 +166,122 @@ export const StyledDashboardCardAction = styled(Button)`
 export const StyledRecentGamesList = styled("div")`
     display: flex;
     flex-direction: column;
+    gap: 12px;
 `;
 
 export const StyledRecentGameRow = styled("div")`
-    display: grid;
-    grid-template-columns: 110px 1fr 64px;
-    align-items: center;
-    gap: 16px;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(71, 104, 138, 0.16);
+    position: relative;
+    overflow: hidden;
 
-    &:last-child {
-        border-bottom: 0;
-    }
+    border-radius: 14px;
+    border: 1px solid rgba(71, 104, 138, 0.2);
+    background: rgba(255, 255, 255, 0.015);
+
+    padding: 14px 18px;
+`;
+
+export const StyledRecentGameBackdrop = styled("div")`
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: none;
+`;
+
+export const StyledRecentGameBackdropLogo = styled("img")<{ $side: "left" | "right" }>`
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    opacity: 0.07;
+    transform: ${({ $side }) => ($side === "left" ? "translateX(-25%)" : "translateX(25%)")};
+`;
+
+export const StyledRecentGameContent = styled("div")`
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+`;
+
+export const StyledRecentGameMeta = styled("div")`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 `;
 
 export const StyledRecentGameDate = styled("span")`
     color: #7f8898;
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 `;
 
 export const StyledRecentGameMatchup = styled("div")`
     display: grid;
-    grid-template-columns: 1fr 32px 32px 1fr;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
+    gap: 16px;
+`;
+
+export const StyledRecentGameTeam = styled("div")<{ $align: "left" | "right" }>`
+    display: flex;
+    align-items: center;
+    justify-content: ${({ $align }) => ($align === "right" ? "flex-end" : "flex-start")};
     gap: 10px;
+
     color: #dce5f5;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+`;
+
+export const StyledTeamLogo = styled("img")`
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    flex-shrink: 0;
+`;
+
+export const StyledRecentGameScore = styled("div")`
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #f8fbff;
+    font-size: 21px;
+    font-weight: 900;
 `;
 
 export const StyledRecentGameStatus = styled("span")`
-    color: #168bff;
-    font-size: 12px;
+    flex-shrink: 0;
+
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(22, 139, 255, 0.35);
+    background: rgba(22, 139, 255, 0.08);
+
+    color: #4da6ff;
+    font-size: 11px;
     font-weight: 850;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+`;
+
+export const StyledRecentGameVenue = styled("div")`
+    color: #697386;
+    font-size: 12px;
+`;
+
+export const StyledRecentGamesEmpty = styled("div")`
+    padding: 12px 0;
+    color: #8f9baa;
+    font-size: 13px;
 `;
 
 export const StyledDataStatusLayout = styled("div")`

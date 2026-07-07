@@ -1,9 +1,12 @@
 package com.game_monitor.nhl_stats_service.controllers;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.game_monitor.nhl_stats_service.models.DashboardSummaryResponse;
+import com.game_monitor.nhl_stats_service.models.RecentGameResponse;
 import com.game_monitor.nhl_stats_service.services.DashboardService;
 
 @RestController
@@ -17,5 +20,10 @@ public class DashboardController {
     @GetMapping("/api/dashboard/summary")
     public DashboardSummaryResponse getDashboardSummary() {
         return dashboardService.getDashboardSummary();
+    }
+
+    @GetMapping("/api/dashboard/recent-games")
+    public List<RecentGameResponse> getRecentGames() {
+        return dashboardService.getRecentGames();
     }
 }
