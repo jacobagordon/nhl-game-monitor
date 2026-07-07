@@ -195,13 +195,14 @@ export const StyledRecentGameBackdropLogo = styled("img")<{
     $side: "left" | "right";
     $isWinner: boolean;
 }>`
-    width: 130px;
-    height: 130px;
+    width: 280px;
+    height: 280px;
     object-fit: contain;
+    flex-shrink: 0;
     opacity: ${({ $isWinner }) => ($isWinner ? 0.38 : 0.07)};
     filter: ${({ $isWinner }) =>
         $isWinner ? "drop-shadow(0 0 30px rgba(22, 139, 255, 0.65))" : "none"};
-    transform: ${({ $side }) => ($side === "left" ? "translateX(-25%)" : "translateX(25%)")};
+    transform: ${({ $side }) => ($side === "left" ? "translateX(-30%)" : "translateX(30%)")};
 `;
 
 export const StyledRecentGameContent = styled("div")`
