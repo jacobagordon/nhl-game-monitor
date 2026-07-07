@@ -112,13 +112,22 @@ namespace nhl_game_monitor.src.Services
                 return;
             }
 
+            foreach (var dateGroup in gamesToPoll.GroupBy(g => g.ScheduleDate))
+            {
+                await PollActiveGamesForDateAsync(dateGroup.Key, dateGroup.ToList(), cancellationToken);
+            }
+        }
+
+        private async Task PollActiveGamesForDateAsync(
+            DateOnly scheduleDate, List<ActiveGame> gamesToPoll, CancellationToken cancellationToken)
+        {
             var schedule = await _apiAccessor.GetScheduleDateAsync(
-                gamesToPoll.First().ScheduleDate.ToString("yyyy-MM-dd"),
+                scheduleDate.ToString("yyyy-MM-dd"),
                 cancellationToken);
 
             if (schedule.GameWeek == null || !schedule.GameWeek.Any())
             {
-                _logger.LogWarning("No game weeks found for {Date} when polling active games", gamesToPoll.First().ScheduleDate.ToString("yyyy-MM-dd"));
+                _logger.LogWarning("No game weeks found for {Date} when polling active games", scheduleDate.ToString("yyyy-MM-dd"));
                 return;
             }
 
