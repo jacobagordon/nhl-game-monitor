@@ -1,6 +1,8 @@
 import { DashboardCard } from "./DashboardCard";
 import type { TopPerformer } from "../interfaces/TopPerformer";
 import {
+    StyledPerformerGroup,
+    StyledPerformerGroupLabel,
     StyledPerformerInfo,
     StyledPerformerLogo,
     StyledPerformerMeta,
@@ -20,6 +22,9 @@ interface TopPerformersCardProps {
 }
 
 export const TopPerformersCard = ({ performers, isLoading, error }: TopPerformersCardProps) => {
+    const skaters = performers.filter(performer => performer.category === "SKATER");
+    const goalies = performers.filter(performer => performer.category === "GOALIE");
+
     return (
         <DashboardCard title="Top Performers">
             {error && <StyledRecentGamesEmpty>{error}</StyledRecentGamesEmpty>}
@@ -34,43 +39,51 @@ export const TopPerformersCard = ({ performers, isLoading, error }: TopPerformer
 
             {!error && !isLoading && performers.length > 0 && (
                 <StyledPerformersList>
-                    {performers.map(performer => (
-                        <StyledPerformerRow
-                            key={`${performer.category}-${performer.playerId}-${performer.gameDate}`}
-                        >
-                            {performer.teamLogoUrl && (
-                                <StyledPerformerLogo
-                                    src={performer.teamLogoUrl}
-                                    alt={performer.teamAbbreviation}
-                                />
-                            )}
+                    {skaters.length > 0 && (
+                        <StyledPerformerGroup>
+                            <StyledPerformerGroupLabel>Top Skaters</StyledPerformerGroupLabel>
+                            <PerformerRows performers={skaters} />
+                        </StyledPerformerGroup>
+                    )}
 
-                            <StyledPerformerInfo>
-                                <StyledPerformerName>{performer.playerFullName}</StyledPerformerName>
-
-                                <StyledPerformerMeta>
-                                    {performer.position} · {performer.teamAbbreviation} vs{" "}
-                                    {performer.opponentTeamAbbreviation} ·{" "}
-                                    {formatGameDate(performer.gameDate)}
-                                </StyledPerformerMeta>
-                            </StyledPerformerInfo>
-
-                            <StyledPerformerStat>
-                                <StyledPerformerStatValue>
-                                    {formatStatValue(performer)}
-                                </StyledPerformerStatValue>
-
-                                <StyledPerformerStatLabel>
-                                    {formatStatLabel(performer)}
-                                </StyledPerformerStatLabel>
-                            </StyledPerformerStat>
-                        </StyledPerformerRow>
-                    ))}
+                    {goalies.length > 0 && (
+                        <StyledPerformerGroup>
+                            <StyledPerformerGroupLabel>Top Goalies</StyledPerformerGroupLabel>
+                            <PerformerRows performers={goalies} />
+                        </StyledPerformerGroup>
+                    )}
                 </StyledPerformersList>
             )}
         </DashboardCard>
     );
 };
+
+const PerformerRows = ({ performers }: { performers: TopPerformer[] }) => (
+    <>
+        {performers.map(performer => (
+            <StyledPerformerRow key={`${performer.category}-${performer.playerId}-${performer.gameDate}`}>
+                {performer.teamLogoUrl && (
+                    <StyledPerformerLogo src={performer.teamLogoUrl} alt={performer.teamAbbreviation} />
+                )}
+
+                <StyledPerformerInfo>
+                    <StyledPerformerName>{performer.playerFullName}</StyledPerformerName>
+
+                    <StyledPerformerMeta>
+                        {performer.position} · {performer.teamAbbreviation} vs{" "}
+                        {performer.opponentTeamAbbreviation} · {formatGameDate(performer.gameDate)}
+                    </StyledPerformerMeta>
+                </StyledPerformerInfo>
+
+                <StyledPerformerStat>
+                    <StyledPerformerStatValue>{formatStatValue(performer)}</StyledPerformerStatValue>
+
+                    <StyledPerformerStatLabel>{formatStatLabel(performer)}</StyledPerformerStatLabel>
+                </StyledPerformerStat>
+            </StyledPerformerRow>
+        ))}
+    </>
+);
 
 const formatStatValue = (performer: TopPerformer): string => {
     if (performer.category === "GOALIE") {

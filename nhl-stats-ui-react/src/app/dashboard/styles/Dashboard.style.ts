@@ -314,7 +314,21 @@ export const StyledRecentGamesEmpty = styled("div")`
 export const StyledPerformersList = styled("div")`
     display: flex;
     flex-direction: column;
+    gap: 18px;
+`;
+
+export const StyledPerformerGroup = styled("div")`
+    display: flex;
+    flex-direction: column;
     gap: 10px;
+`;
+
+export const StyledPerformerGroupLabel = styled("div")`
+    color: #7f8898;
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 `;
 
 export const StyledPerformerRow = styled("div")`
