@@ -3,6 +3,7 @@ package com.game_monitor.nhl_stats_service.controllers;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.game_monitor.nhl_stats_service.models.DashboardSummaryResponse;
@@ -26,6 +27,12 @@ public class DashboardController {
     @GetMapping("/api/dashboard/recent-games")
     public List<RecentGameResponse> getRecentGames() {
         return dashboardService.getRecentGames();
+    }
+
+    @GetMapping("/api/games")
+    public List<RecentGameResponse> getGames(
+            @RequestParam(defaultValue = "date-newest") String sortBy) {
+        return dashboardService.getGames(sortBy);
     }
 
     @GetMapping("/api/dashboard/top-performers")

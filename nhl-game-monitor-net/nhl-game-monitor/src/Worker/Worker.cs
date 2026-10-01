@@ -37,26 +37,28 @@ public class Worker(
             }
         }
 
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            if (logger.IsEnabled(LogLevel.Information))
+        /*
+            while (!stoppingToken.IsCancellationRequested)
             {
-                logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-            }
+                if (logger.IsEnabled(LogLevel.Information))
+                {
+                    logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                }
 
-            try
-            {
-                var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
-                await nhlGameService.CheckForCompletedGamesAsync(currentDate, stoppingToken);
-                await SaveCheckpointAsync(currentDate, stoppingToken);
-            }
-            catch (Exception ex) when (ex is not OperationCanceledException)
-            {
-                logger.LogError(ex, "Worker failed to check for completed games");
-            }
+                try
+                {
+                    var currentDate = DateOnly.FromDateTime(DateTime.UtcNow);
+                    await nhlGameService.CheckForCompletedGamesAsync(currentDate, stoppingToken);
+                    await SaveCheckpointAsync(currentDate, stoppingToken);
+                }
+                catch (Exception ex) when (ex is not OperationCanceledException)
+                {
+                    logger.LogError(ex, "Worker failed to check for completed games");
+                }
 
-            await Task.Delay(20000, stoppingToken);
-        }
+                await Task.Delay(20000, stoppingToken);
+            }
+            */
     }
 
     private async Task BackfillMissedDatesAsync(CancellationToken cancellationToken)

@@ -8,4 +8,12 @@ public interface GameSummaryRepository
         extends ElasticsearchRepository<GameSummaryDocument, String> {
 
     List<GameSummaryDocument> findTop5ByOrderByGameStartTimeUtcDesc();
+
+    List<GameSummaryDocument> findAllByOrderByGameDateDescGameStartTimeUtcDesc();
+
+    List<GameSummaryDocument> findAllByOrderByGameDateAscGameStartTimeUtcAsc();
+
+    List<GameSummaryDocument> findAllByOrderByTotalGoalsDescGameDateDescGameStartTimeUtcDesc();
+
+    List<GameSummaryDocument> findAllByOrderByTotalGoalsAscGameDateDescGameStartTimeUtcDesc();
 }

@@ -54,6 +54,21 @@ public class DashboardService {
                 .toList();
     }
 
+    public List<RecentGameResponse> getGames(String sortBy) {
+        List<GameSummaryDocument> games = switch (sortBy == null ? "date-newest" : sortBy) {
+            case "date-oldest" -> gameSummaryRepository.findAllByOrderByGameDateAscGameStartTimeUtcAsc();
+            case "score-desc" -> gameSummaryRepository
+                    .findAllByOrderByTotalGoalsDescGameDateDescGameStartTimeUtcDesc();
+            case "score-asc" -> gameSummaryRepository
+                    .findAllByOrderByTotalGoalsAscGameDateDescGameStartTimeUtcDesc();
+            default -> gameSummaryRepository.findAllByOrderByGameDateDescGameStartTimeUtcDesc();
+        };
+
+        return games.stream()
+                .map(this::mapToRecentGameResponse)
+                .toList();
+    }
+
     private RecentGameResponse mapToRecentGameResponse(GameSummaryDocument game) {
         return RecentGameResponse.builder()
                 .id(game.getGameId())
@@ -86,8 +101,8 @@ public class DashboardService {
     public List<TopPerformerResponse> getTopPerformers() {
         List<GameSummaryDocument> recentGames = gameSummaryRepository.findTop5ByOrderByGameStartTimeUtcDesc();
         List<Long> gameIds = recentGames.stream().map(GameSummaryDocument::getGameId).toList();
-        Map<Long, GameSummaryDocument> gamesById =
-                recentGames.stream().collect(Collectors.toMap(GameSummaryDocument::getGameId, game -> game));
+        Map<Long, GameSummaryDocument> gamesById = recentGames.stream()
+                .collect(Collectors.toMap(GameSummaryDocument::getGameId, game -> game));
 
         List<TopPerformerResponse> topSkaters = playerGameLogRepository.findByGameIdIn(gameIds).stream()
                 .sorted(Comparator.comparingInt(PlayerGameLogDocument::getPoints).reversed())
