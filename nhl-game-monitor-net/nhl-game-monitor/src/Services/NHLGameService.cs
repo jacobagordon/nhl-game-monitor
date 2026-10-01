@@ -136,6 +136,7 @@ namespace nhl_game_monitor.src.Services
                 catch (Exception ex) when (ex is not OperationCanceledException)
                 {
                     _logger.LogError(ex, "Failed to poll active games for {Date}", dateGroup.Key);
+                    throw;
                 }
             }
         }

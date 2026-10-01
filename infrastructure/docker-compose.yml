@@ -29,6 +29,8 @@ services:
                 condition: service_healthy
         ports:
             - "5000:8080"
+        volumes:
+            - nhl-game-monitor-data:/app/data
         healthcheck:
             test:
                 [
@@ -136,4 +138,5 @@ services:
                 condition: service_healthy
 
 volumes:
+    nhl-game-monitor-data:
     opensearch-data:

@@ -38,6 +38,28 @@ export const StyledDashboardSubtitle = styled("p")`
     font-size: 14px;
 `;
 
+export const StyledBackfillNotice = styled("aside")`
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border: 1px solid rgba(226, 172, 69, 0.3);
+    border-left: 3px solid #e2ac45;
+    border-radius: 8px;
+    background: rgba(113, 76, 13, 0.14);
+    color: #f2e5c9;
+    font-size: 14px;
+    line-height: 1.45;
+
+    strong {
+        display: block;
+        margin-bottom: 2px;
+        color: #f4d596;
+        font-weight: 700;
+    }
+`;
+
 export const StyledSummaryGrid = styled("section")`
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -236,7 +258,10 @@ export const StyledRecentGameMatchup = styled("div")`
     gap: 16px;
 `;
 
-export const StyledRecentGameTeam = styled("div")<{ $align: "left" | "right"; $isWinner?: boolean }>`
+export const StyledRecentGameTeam = styled("div")<{
+    $align: "left" | "right";
+    $isWinner?: boolean;
+}>`
     display: flex;
     align-items: center;
     justify-content: ${({ $align }) => ($align === "right" ? "flex-end" : "flex-start")};

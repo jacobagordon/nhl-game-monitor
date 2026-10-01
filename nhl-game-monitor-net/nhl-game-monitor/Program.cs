@@ -21,6 +21,7 @@ builder.Services.Configure<RabbitMQSettings>(
 
 builder.Services.AddSingleton<IEventPublisher, RabbitMQEventPublisher>();
 builder.Services.AddSingleton<GameMonitorState>();
+builder.Services.AddSingleton<BackfillStatus>();
 builder.Services.AddSingleton<NHLGameService>();
 builder.Services.AddSingleton<RabbitMQHealthService>();
 builder.Services.AddHostedService<Worker>();
@@ -46,5 +47,7 @@ app.MapGet("/health", async (RabbitMQHealthService rabbitMqHealthService) =>
         rabbitMq = rabbitMqHealth
     });
 });
+app.MapGet("/backfill/status", (BackfillStatus backfillStatus) =>
+    Results.Ok(new { isBackfilling = backfillStatus.IsBackfilling }));
 app.MapControllers();
 app.Run();
